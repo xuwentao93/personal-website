@@ -1,0 +1,37 @@
+{
+  "name": "y",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite --config config/vite.config.ts",
+    "build": "tsc && vite build --config config/vite.config.ts",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "antd": "^4.19.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-markdown": "^8.0.1",
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^16.9.9",
+    "@types/react-router-dom": "^5.1.6",
+    "@typescript-eslint/parser": "^4.1.1",
+    "@vitejs/plugin-react": "^1.0.7",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.17.0",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
+    "typescript": "^4.5.4",
+    "vite": "^2.8.0"
+  }
+}

@@ -1,0 +1,88 @@
+.personal-article-list-component-page {
+  margin-bottom: 20px;
+  font-family: -apple-system,system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial !important;
+  background-color: #fff;
+
+  .article {
+    padding: 12px 20px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color .3s;
+
+    &:hover {
+      background-color: #eee;
+    }
+  }
+
+  .type-container {
+    margin-bottom: 3px;
+    font-size: 13px;
+
+    .sub-type {
+      color: #999;
+    }
+  }
+
+  .article-info {
+    display: flex;
+
+    .article-left-message {
+      height: 96px;
+      position: relative; // 子元素绝对定位用.
+      flex: 1;
+
+      .title {
+        overflow: hidden;
+        width: 100%;
+        margin-bottom: 3px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1d2129;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .brief {
+        overflow: hidden;
+        display: -webkit-box;
+        font-weight: 400;
+        font-size: 13px;
+        color: #666;
+        text-overflow: ellipsis;
+        box-orient: vertical;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
+
+      .article-bottom-info {
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        color: #999;
+    
+        .eye {
+          width: 16px;
+          height: 16px;
+          margin-right: 6px;
+          fill: #4e5969;
+        }
+    
+        .view {
+          margin-right: 20px;
+        }
+      }
+    }
+
+    .article-right-message {
+      margin-left: 24px;
+
+      .article-cover {
+        width: 144px;
+        height: 96px;
+      }
+    }
+  }
+
+}

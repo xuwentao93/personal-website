@@ -1,0 +1,54 @@
+@charset "utf-8";
+
+/* default styles */
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+body,
+ul,
+li,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+li {
+  display: inline-block;
+}
+
+body {
+  font-size: 14px;
+  font-family: "Microsoft YaHei", "微软雅黑", "San Francisco", consolas, Monoca 
+}
+
+table {
+  border-collapse: collapse;
+}
+
+li {
+  list-style: none;
+}
+/* resize 允许用户拉伸 */
+textarea {
+  resize: none;
+}
+
+/* 清除浮动 */
+.clear-float:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+input {
+  outline: none;
+}
