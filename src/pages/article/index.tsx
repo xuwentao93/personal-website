@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Markdown from 'react-markdown';
-import testMd from '@/utils/test.md?raw';
+import Navigation from '@/components/NewNavigation';
 import './index.less';
 
-interface ArticleType {
+interface Article {
   content: string, // 文章内容, markdown 字符串和
   time: number, // 写作时间
   title: string, // 文章标题
@@ -14,8 +14,8 @@ interface ArticleType {
 
 // console.log(ReactMarkdown);
 
-const test: ArticleType = {
-  content: testMd,
+const test: Article = {
+  content: '# 123123- 123123',
   title: '测试文件',
   type: 'other',
   view: 120,
@@ -24,10 +24,11 @@ const test: ArticleType = {
 
 export default function Article() {
   return (
-    <div>
-      <Markdown>{testMd}</Markdown>
-      1231235
-      {/* <div><ReactMarkdown>123123132</ReactMarkdown></div> */}
+    <div className="personal-article-page">
+      <Navigation />
+      <div className="article-container">
+        <Markdown>{test.content}</Markdown>
+      </div>
     </div>
   );
 }

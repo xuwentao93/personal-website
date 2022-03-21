@@ -6,7 +6,7 @@ export default function NewNavigation() {
   const [focus, setFocus] = useState(false);
 
   return (
-    <div className="navigation">
+    <div className="personal-new-navigation-component">
       <img
         src="https://img.alicdn.com/imgextra/i3/O1CN01tCQx6r1vGuwZuW4jd_!!6000000006146-2-tps-936-844.png"
         className="avatar"

@@ -4,7 +4,7 @@ import buildConifg from './vite.build';
 import devConfig from './vite.dev';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ command }) => {
   const commonConfig = {
     plugins: [react()]
   };
@@ -13,12 +13,10 @@ export default defineConfig(({ command, mode }) => {
     return {
       ...commonConfig,
       ...devConfig
-    }
-  } else {
-    // command === 'build'
-    return {
-      ...commonConfig,
-      ...devConfig
-    }
+    };
   }
-})
+  return {
+    ...commonConfig,
+    ...devConfig
+  };
+});

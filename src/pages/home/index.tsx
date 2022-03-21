@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import ArticleList, { ArticleType } from './components/article';
 import Navigation from '@/components/NewNavigation';
+import ArticleList, { Article } from './components/article';
 import { titleListMap, TitieListType } from './constant';
 import './index.less';
 
-const test: ArticleType[] = [
+const test: Article[] = [
   {
     time: 1645543553232,
     title: '技术文章',

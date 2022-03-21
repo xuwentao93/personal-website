@@ -4,7 +4,7 @@ import * as React from 'react';
 import './index.less';
 import { dateFormat } from '@/utils';
 
-export interface ArticleType {
+export interface Article {
   time: number // 文章发布时间
   title: string // 标题
   brief: string // 简介
@@ -16,7 +16,7 @@ export interface ArticleType {
 }
 
 interface ArticleProp {
-  articleList: ArticleType[]
+  articleList: Article[]
 }
 
 const typeMap = {

@@ -1,0 +1,42 @@
+.personal-new-navigation-component {
+  display: flex;
+  align-items: center;
+  position: relative; // 子元素绝对定位用.
+  height: 64px;
+  padding-left: 60px;
+  border-bottom: 1px solid #eee;
+  font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", PingFang SC, Lantinghei SC, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
+  background-color: #fff;
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    margin-right: 16px;
+    border-radius: 32px;
+  }
+
+  .name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .input-container {
+    position: absolute;
+    right: 60px;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    color: #666;
+    background-color: #f2f3f5;
+    border-radius: 4px;
+    transition: all .4s;
+
+    .input {
+      min-width: 180px;
+      border: none;
+      font-size: 13px;
+      outline: none;
+      background-color: transparent;
+    }
+  }
+}
