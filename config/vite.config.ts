@@ -17,6 +17,6 @@ export default defineConfig(({ command }) => {
   }
   return {
     ...commonConfig,
-    ...devConfig
+    ...buildConifg
   };
 });
