@@ -17,7 +17,8 @@ export interface WriteArticleType {
   type: ArticleType,
   subType?: string,
   text: string,
-  title: string
+  title: string,
+  cover: any
 }
 
 export interface CheckIdentifyType {
@@ -28,7 +29,7 @@ export interface CheckIdentifyType {
 export const getArticleList = (params: GetArticleListType) => request.get('/getArticleList', { params });
 
 // 获取文章内容.
-export const getArticle = (params: GetArticleType) => request.get('./getArticle', { params });
+export const getArticle = (params: GetArticleType) => request.get('/getArticle', { params });
 
 // 获取查询列表.
 export const searchArticle = (params: SearchArticleType) => request.get('/getArticleList', { params });

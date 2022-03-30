@@ -8,6 +8,8 @@ declare module '*.ico';
 
 declare module '*.jpeg';
 
+declare module 'markdown-it';
+
 declare module '*.md' {
   const content: string;
   export default content;
