@@ -1,15 +1,17 @@
+# perosnal website tech docs
+
 <br />
 <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29092e57c0aa49be99cfdc7c8b3f5ae8~tplv-k3u1fbpfcp-zoom-crop-mark:1304:1304:1304:734.awebp?" width="100%" />
 <br />
 <br />
 
-## 上传文章
+## 1.上传文章
 ***
 <br />
 
-url: /writeArticle  
-请求方式: POST  
-入参:  
+**url: /writeArticle**  
+**请求方式: POST**  
+**入参:**  
 ```javascript
   // 入参类型
   interface WriteArticleInputType {
@@ -49,9 +51,122 @@ url: /writeArticle
   }
 
 ```
-出参:
-```
+**出参:**
+```javascript
   interface WriteArticleOutputType {
+    // 接口调用是否成功.
+    success: boolean,
+    // 文章上传成功.
+    upload: true
+  }
+```
+
+## 2. 获取文章列表
+***
+<br/>
+
+**url: /getArticleList**  
+**请求方式: GET**
+**入参**
+``` javascript
+  // 入参类型
+interface GetArticleListInputType {
+  // 文章类型, 枚举类型同上传接口.
+  type: ArticleType
+}
+
+```
+**出参:**
+```javascript
+  // 每个文章的类型.
+  interface Article {
+    // 文章发布时间
+    time: number,
+    // 标题
+    title: string, 
+    // 简介.
+    brief?: string,
+    // 封面图片地址
+    cover: string,
+    // 文章类型, 枚举类型同上传接口.
+    type: ArticleType,
+    // 文章子类型
+    subtype?: string,
+    // 浏览次数
+    view: number,
+    // 标识文章唯一的 id
+    id: string,
+  }
+
+  // 出参类型.
+  interface GetArticleListOutputType {
+  // 文章类型, 枚举类型同上传接口.
+  articleList: Article[],
+  // 接口调用是否成功.
+  success: boolean
+
+  // 出参示例.
+  {
+    articleList: [
+      {
+        time: 1648800014254,
+        title: '把李立凯献祭给上帝',
+        breif: '',
+        cover: 'https://www.baidu.com',
+        type: 3,
+        view: 123123,
+        id: 1
+      },
+      {
+        time: 1648800014254,
+        title: '李立凯油炸好吃吗',
+        breif: '这篇文章教大家怎么油炸李立凯.',
+        cover: 'https://www.google.com',
+        type: 2,
+        view: 1231423,
+        id: 2
+      }
+    ], 
+    success: true
+  }
+}
+
+```
+
+## 3. 获取文章内容
+***
+<br/>
+
+**url: /getArticle**  
+**请求方式: GET**  
+**入参:**  
+```javascript
+  // 入参类型
+  interface GetArticleInputType {
+    // 标识文章唯一的 id
+    id: number
+  }
+
+```
+**出参:**
+```javascript
+  // 出参类型.
+  interface GetArticleOutputType {
+    // 文章内容, 类型同文章列表.
+    article: Article,
+    // 接口调用是否成功.
     success: boolean
   }
 ```
+
+## 4. 身份校验
+***
+<br/>
+
+## 5. 获取查询列表(搜索)
+***
+<br/>
+
+## 6. 增加文章浏览量
+***
+<br/>

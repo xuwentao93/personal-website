@@ -31,6 +31,9 @@ export const getArticleList = (params: GetArticleListType) => request.get('/getA
 // 获取文章内容.
 export const getArticle = (params: GetArticleType) => request.get('/getArticle', { params });
 
+// 增加浏览量.
+export const viewArticle = (params: GetArticleType) => request.get('/viewArticle', { params });
+
 // 获取查询列表.
 export const searchArticle = (params: SearchArticleType) => request.get('/getArticleList', { params });
 

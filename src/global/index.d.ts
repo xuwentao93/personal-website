@@ -8,7 +8,9 @@ declare module '*.ico';
 
 declare module '*.jpeg';
 
-declare module 'markdown-it';
+declare module 'react-syntax-highlighter';
+
+declare module 'react-syntax-highlighter/dist/esm/styles/prism';
 
 declare module '*.md' {
   const content: string;
