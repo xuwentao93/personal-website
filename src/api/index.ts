@@ -32,10 +32,10 @@ export const getArticleList = (params: GetArticleListType) => request.get('/getA
 export const getArticle = (params: GetArticleType) => request.get('/getArticle', { params });
 
 // 增加浏览量.
-export const viewArticle = (params: GetArticleType) => request.get('/viewArticle', { params });
+export const viewArticle = (params: { id: number }) => request.get('/viewArticle', { params });
 
 // 获取查询列表.
-export const searchArticle = (params: SearchArticleType) => request.get('/getArticleList', { params });
+export const getSearchList = (params: SearchArticleType) => request.get('/getSearchList', { params });
 
 // 写文章.
 export const writeArticle = (data: WriteArticleType) => request.post('/writeArticle', data);

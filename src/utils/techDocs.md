@@ -17,7 +17,7 @@
   interface WriteArticleInputType {
     // 文章类型
     type: ArticleType,
-    // 文章子类型.
+    // 文章子类型
     subType?: string,
     // 文章内容
     text: string,
@@ -47,16 +47,16 @@
     subType: "react",
     text: "这是文章的内容, 讲述了 react 的使用方法, 以及一些进阶教程.",
     title: "react 怎么学?",
-    cover: binary // 二进制文件.
+    cover: binary // 二进制文件
   }
 
 ```
 **出参:**
 ```javascript
   interface WriteArticleOutputType {
-    // 接口调用是否成功.
+    // 接口调用是否成功
     success: boolean,
-    // 文章上传成功.
+    // 文章上传成功
     upload: true
   }
 ```
@@ -66,29 +66,29 @@
 <br/>
 
 **url: /getArticleList**  
-**请求方式: GET**
-**入参**
+**请求方式: GET**  
+**入参:**
 ``` javascript
   // 入参类型
 interface GetArticleListInputType {
-  // 文章类型, 枚举类型同上传接口.
+  // 文章类型, 枚举类型同上传接口
   type: ArticleType
 }
 
 ```
 **出参:**
 ```javascript
-  // 每个文章的类型.
+  // 每个文章的类型
   interface Article {
     // 文章发布时间
     time: number,
     // 标题
     title: string, 
-    // 简介.
+    // 简介
     brief?: string,
     // 封面图片地址
     cover: string,
-    // 文章类型, 枚举类型同上传接口.
+    // 文章类型, 枚举类型同上传接口
     type: ArticleType,
     // 文章子类型
     subtype?: string,
@@ -98,14 +98,15 @@ interface GetArticleListInputType {
     id: string,
   }
 
-  // 出参类型.
+  // 出参类型
   interface GetArticleListOutputType {
-  // 文章类型, 枚举类型同上传接口.
-  articleList: Article[],
-  // 接口调用是否成功.
-  success: boolean
+    // 文章类型, 枚举类型同上传接口
+    articleList: Article[],
+    // // 接口调用是否成功
+    success: boolean
+  }
 
-  // 出参示例.
+  // 出参示例
   {
     articleList: [
       {
@@ -150,11 +151,11 @@ interface GetArticleListInputType {
 ```
 **出参:**
 ```javascript
-  // 出参类型.
+  // 出参类型
   interface GetArticleOutputType {
-    // 文章内容, 类型同文章列表.
+    // 文章内容, 类型同文章列表
     article: Article,
-    // 接口调用是否成功.
+    // // 接口调用是否成功
     success: boolean
   }
 ```
@@ -163,10 +164,83 @@ interface GetArticleListInputType {
 ***
 <br/>
 
-## 5. 获取查询列表(搜索)
+**url: /checkIdentify**  
+**请求方式: POST**  
+**入参:** 
+```javascript
+  // 入参类型
+  interface CheckIdentifyInputType {
+    // 一个动态 code 码, 用来标志身份
+    code: string
+  }
+```
+**出参:**
+```javascript
+  // 出参类型
+  interface CheckIdentifyOutputType {
+    // 身份校验是否通过
+    pass: true,
+    // // 接口调用是否成功
+    success: boolean
+    // 
+  }
+```
+
+
+## 5. 获取查询列表(搜索)  
 ***
 <br/>
+
+**url: /getSearchList**  
+**请求方式: GET**  
+**入参:**
+```javascript
+  // 入参类型
+  interface SearchArticleInputType {
+    // 输入框内容
+    content: string
+  }
+```
+
+**出参:**
+```javascript
+  // 输入框信息
+  interface SearchInfo {
+    // 文章标题
+    title: '',
+    // 标识文章唯一的 id
+    id: '',
+  }
+
+  // 出参类型
+  interface SearchArticleOutputType {
+    // 输入框内容
+    searchList: SearchInfo[],
+    // // 接口调用是否成功
+    success: boolean
+  }
+```
 
 ## 6. 增加文章浏览量
 ***
 <br/>
+
+**url: /viewArticle**  
+**请求方式: GET**  
+**入参:**
+```javascript
+  // 入参类型
+  interface ViewArticleInputType {
+    // 标识文章唯一的 id
+    id: number
+  }
+```
+
+**出参:**
+```javascript
+  // 出参类型
+  interface ViewArticleOutputType {
+    // // 接口调用是否成功
+    success: true,
+  }
+```

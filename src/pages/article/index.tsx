@@ -5,7 +5,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import rehypeRaw from 'rehype-raw';
 import Navigation from '@/components/NewNavigation';
 import { dateFormat } from '@/utils';
-import testMd from '@/utils/test.md?raw';
+import testMd from '@/utils/techDocs.md?raw';
 import './index.less';
 
 interface ArticleType {
