@@ -3,13 +3,14 @@ import * as React from 'react';
 // import { useState, useEffect } from 'react';
 import './index.less';
 import { dateFormat } from '@/utils';
+import { ArticleType } from '@/constant/enum';
 
 export interface Article {
   time: number // 文章发布时间
   title: string // 标题
   brief: string // 简介
   cover: string // 封面图片地址
-  type: 'life' | 'frontend' | 'algorithm' | 'network' | 'other' // 文章类型
+  type: ArticleType.life | ArticleType.frontend | ArticleType.algorithm | ArticleType.network | ArticleType.other // 文章类型
   subtype?: string // 文章子类型
   view: number // 浏览次数
   id: string // 标识文章唯一的 id
@@ -20,23 +21,23 @@ interface ArticleProp {
 }
 
 const typeMap = {
-  life: {
+  [ArticleType.life]: {
     text: '生活',
     color: '#67C23A'
   },
-  frontend: {
+  [ArticleType.frontend]: {
     text: '前端',
     color: '#49f'
   },
-  algorithm: {
+  [ArticleType.algorithm]: {
     text: '算法',
     color: '#E6A23C'
   },
-  network: {
+  [ArticleType.network]: {
     text: '网络',
     color: '#c41d7f'
   },
-  other: {
+  [ArticleType.other]: {
     text: '其他',
     color: '#f3f3f3'
   }
@@ -50,7 +51,7 @@ export default function ArticleList(props: ArticleProp) {
       {articleList.length === 0 && (
         <div>啊没有资源</div>
       )}
-      {articleList.map(article => (
+      {articleList.map((article: Article) => (
         <div className="article-list" key={article.id}>
           <div className="article" onClick={() => window.open(`./article/${article.id}`)}>
             <div className="type-container">

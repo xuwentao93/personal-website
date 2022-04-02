@@ -102,7 +102,7 @@ interface GetArticleListInputType {
   interface GetArticleListOutputType {
     // 文章类型, 枚举类型同上传接口
     articleList: Article[],
-    // // 接口调用是否成功
+    // 接口调用是否成功
     success: boolean
   }
 
@@ -244,3 +244,7 @@ interface GetArticleListInputType {
     success: true,
   }
 ```
+
+## 7. 保存至草稿箱.
+
+## 8. 从草稿箱获取内容.

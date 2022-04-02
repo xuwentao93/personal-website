@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import * as React from 'react';
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -8,7 +7,7 @@ import { dateFormat } from '@/utils';
 import testMd from '@/utils/techDocs.md?raw';
 import './index.less';
 
-interface ArticleType {
+interface ArticleMsgType {
   content: string, // 文章内容, markdown 字符串和
   time: number, // 写作时间
   title: string, // 文章标题
@@ -19,7 +18,7 @@ interface ArticleType {
 
 // console.log(ReactMarkdown);
 
-const test: ArticleType = {
+const test: ArticleMsgType = {
   content: testMd,
   title: '测试文件',
   type: 'other',

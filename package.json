@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@types/node": "^17.0.21",
-    "antd": "^4.19.2",
     "axios": "^0.19.1",
     "markdown-it": "^12.3.2",
     "react": "^17.0.2",
