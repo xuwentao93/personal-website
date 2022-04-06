@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 declare module '*.svg';
 
 declare module '*.png';
@@ -17,4 +18,8 @@ declare module 'react-syntax-highlighter/dist/esm/styles/prism';
 declare module '*.md' {
   const content: string;
   export default content;
+}
+
+interface HTMLDivElement {
+  scrollTop: number
 }
