@@ -18,7 +18,7 @@ export default function Write() {
     write({ text }: any) {
       setValue(text);
     },
-    sychronizeScroll(e) {
+    sychronizeScroll(e: any) {
       console.log(e);
     },
     handle() {
@@ -28,7 +28,7 @@ export default function Write() {
   return (
     <div className="personal-write-page">
       <div className="navigation">
-        <input className="title" placeholder="请输入标题..." onChange={e => setTitle(e)} />
+        <input className="title" placeholder="请输入标题..." onChange={(e: any) => setTitle(e)} />
       </div>
       <div className="markdown-container">
         <MdEditor

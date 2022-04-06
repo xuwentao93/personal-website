@@ -1,12 +1,3 @@
-import path from 'path';
-
-const devConfig = {
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, '../src/')
-    },
-    extensions: ['.tsx', '.ts', '.jsx', '.js', '/index.tsx', '/index.ts', '/index.jsx', '/index.js']
-  }
-};
+const devConfig = {};
 
 export default devConfig;
