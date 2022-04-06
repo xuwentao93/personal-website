@@ -10,5 +10,9 @@ export enum ArticleType {
   // 生活
   life = 3,
   // 其他
-  other = 4
+  other = 4,
+  // 全部
+  all = 10,
+  // 近期
+  current = 11
 }

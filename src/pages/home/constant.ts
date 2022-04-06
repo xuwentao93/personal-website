@@ -1,43 +1,45 @@
+import { ArticleType } from '@/constant/enum';
+
+export interface TitieListType {
+  text: string,
+  code: ArticleType,
+  selected: boolean
+}
+
 export const titleListMap: TitieListType[] = [
   {
     text: '全部',
-    code: 'all',
+    code: ArticleType.all,
     selected: false
   },
   {
     text: '近期',
-    code: 'current',
+    code: ArticleType.current,
     selected: false
   },
   {
     text: '前端',
-    code: 'frontend',
+    code: ArticleType.frontend,
     selected: false
   },
   {
     text: '网络',
-    code: 'network',
+    code: ArticleType.network,
     selected: false
   },
   {
     text: '算法',
-    code: 'algorithm',
+    code: ArticleType.algorithm,
     selected: false
   },
   {
     text: '生活',
-    code: 'life',
+    code: ArticleType.life,
     selected: false
   },
   {
     text: '其他',
-    code: 'ohter',
+    code: ArticleType.other,
     selected: false
   }
 ];
-
-export interface TitieListType {
-  text: string,
-  code: string,
-  selected: boolean
-}

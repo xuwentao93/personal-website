@@ -26,19 +26,19 @@ export interface CheckIdentifyType {
 }
 
 // 根据类型查询文章列表.
-export const getArticleList = (params: GetArticleListType) => request.get('/getArticleList', { params });
+export const getArticleList = (params: GetArticleListType) => request.get('/article/list', { params });
 
 // 获取文章内容.
-export const getArticle = (params: GetArticleType) => request.get('/getArticle', { params });
+export const getArticle = (params: GetArticleType) => request.get('/article/get', { params });
 
 // 增加浏览量.
-export const viewArticle = (params: { id: number }) => request.get('/viewArticle', { params });
+export const viewArticle = (params: { id: number }) => request.get('/article/viewArticle', { params });
 
 // 获取查询列表.
-export const getSearchList = (params: SearchArticleType) => request.get('/getSearchList', { params });
+export const getSearchList = (params: SearchArticleType) => request.get('​/article​/getSearchList', { params });
 
 // 写文章.
-export const writeArticle = (data: WriteArticleType) => request.post('/writeArticle', data);
+export const writeArticle = (data: WriteArticleType) => request.post('/article/write', data);
 
 // 身份校验.
-export const checkIdentify = (data: CheckIdentifyType) => request.post('/checkIdentify', data);
+export const checkIdentify = (data: CheckIdentifyType) => request.post('/auth/checkIdentify', data);
