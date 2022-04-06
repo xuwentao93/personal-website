@@ -11,8 +11,9 @@ import './index.less';
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
 export default function Write() {
-  const [value, setValue] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
+  const [value, setValue] = useState('');
+  const [title, setTitle] = useState('');
+  const [modal, setModal] = useState(false);
 
   const view = useRef<HTMLDivElement>(null);
 
@@ -32,17 +33,30 @@ export default function Write() {
     },
     handle() {
       console.log(title);
+    },
+    setTitle(e: React.ChangeEvent<HTMLInputElement>) {
+      if (e.target.value.length > 16) return;
+      setTitle(e.target.value);
     }
   };
+
   return (
     <div className="personal-write-page">
+
       <div className="navigation">
-        <input
-          className="title"
-          placeholder="请输入标题..."
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
-        />
+        <div className="input-container">
+          <input
+            className="title"
+            placeholder="请输入标题, 最多十六字"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => methods.setTitle(e)}
+          />
+        </div>
+        <div className="button" onClick={() => setModal(true)}>
+          <span style={{ marginRight: '6px' }}>上</span>
+          <span>传</span>
+        </div>
       </div>
+
       <div className="markdown-container">
         <MdEditor
           value={value}
@@ -80,6 +94,13 @@ export default function Write() {
           </Markdown>
         </div>
       </div>
+
+      {modal && (
+        <div className="block">
+          <div className="center-box">123</div>
+        </div>
+      )}
+
     </div>
   );
 }
