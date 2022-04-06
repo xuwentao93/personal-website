@@ -45,7 +45,9 @@ module.exports = {
     'jsx-a11y/no-noninteractive-element-interactions': 0,
     'prefer-const': 0,
     'jsx-a11y/no-static-element-interactions': 0,
-    'react/require-default-props': 0
+    'react/require-default-props': 0,
+    'no-shadow': 0,
+    'react/jsx-props-no-spreading': 0
     // 'import/no-unresolved': 0,
   }
 }
