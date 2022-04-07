@@ -15,10 +15,10 @@ export interface SearchArticleType {
 
 export interface WriteArticleType {
   type: ArticleType,
-  subType?: string,
+  subtype?: string,
   text: string,
   title: string,
-  cover: any
+  cover: string
 }
 
 export interface CheckIdentifyType {

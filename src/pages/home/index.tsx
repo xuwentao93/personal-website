@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import Navigation from '@/components/NewNavigation';
 import { ArticleType } from '@/constant/enum';
 import { getArticleList } from '@/api';
+import { titleListMap, TitieListType } from '@/constant';
 import ArticleList, { Article } from './components/article';
-import { titleListMap, TitieListType } from './constant';
 import './index.less';
 
 const test: Article[] = [
