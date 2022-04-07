@@ -45,9 +45,6 @@ export default function Write() {
         textarea.scrollTop = scrollTop;
       }
     },
-    handle() {
-      console.log(writeParams.title);
-    },
     setTitle(e: React.ChangeEvent<HTMLInputElement>) {
       if (e.target.value.length > 16) return;
       setWriteParams({

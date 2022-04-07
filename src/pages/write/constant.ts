@@ -24,7 +24,6 @@ export const initialParams: WriteArticleType = {
 };
 
 export function reducer(state: WriteArticleType, action: WriteAction) {
-  console.log(action);
   return {
     ...state,
     [action.type]: action.value
