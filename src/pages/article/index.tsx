@@ -6,7 +6,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import rehypeRaw from 'rehype-raw';
 import Navigation from '@/components/NewNavigation';
 import { dateFormat } from '@/utils';
-import { getArticle } from '@/api';
+import { getArticle, viewArticle } from '@/api';
 import { ArticleType } from '@/constant/enum';
 import './index.less';
 
@@ -38,11 +38,15 @@ export default function Article() {
           setArticle(res.data);
         }
       });
+    },
+    viewArticle() {
+      viewArticle({ id });
     }
   };
 
   useEffect(() => {
     methods.getArticle();
+    methods.viewArticle();
   }, []);
 
   return (
