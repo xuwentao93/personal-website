@@ -18,7 +18,7 @@ export interface WriteArticleType {
   subtype?: string,
   text: string,
   title: string,
-  cover: string
+  cover?: string
 }
 
 export interface CheckIdentifyType {

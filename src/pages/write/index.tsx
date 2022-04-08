@@ -14,6 +14,7 @@ import 'react-markdown-editor-lite/lib/index.css';
 import { titleListMap, TitieListType } from '@/constant';
 import { writeArticle } from '@/api';
 import Tag from '@/components/Tag';
+import message from '@/components/Message';
 import { ArticleType } from '@/constant/enum';
 import { reducer, initialParams, writeType } from './constant';
 import './index.less';
@@ -106,8 +107,25 @@ export default function Write() {
       });
     },
     writeArticle() {
-      writeArticle(writeParams).then(res => {
-        console.log(res);
+      if (writeParams.title === '') {
+        message.error('标题不能为空!');
+        return;
+      }
+      if (!writeParams.type) {
+        message.error('类型不能为空!');
+        return;
+      }
+      if (!writeParams.text) {
+        message.error('文章内容不能为空!');
+        return;
+      }
+      writeArticle(writeParams).then((res: any) => {
+        if (res.success) {
+          setModal(false);
+          message.success('上传成功!');
+        } else {
+          message.error(res.message || '上传失败!');
+        }
       });
     }
   };

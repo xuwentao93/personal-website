@@ -7,7 +7,7 @@ export interface Article {
   time: number // 文章发布时间
   title: string // 标题
   brief: string // 简介
-  cover: string // 封面图片地址
+  cover?: string // 封面图片地址
   // 文章类型
   type: ArticleType.life | ArticleType.frontend | ArticleType.algorithm | ArticleType.network | ArticleType.other
   subtype?: string // 文章子类型
@@ -73,7 +73,7 @@ export default function ArticleList(props: ArticleProp) {
                 </div>
               </div>
               <div className="article-right-message">
-                <img src={article.cover} className="article-cover" alt="" />
+                {article.cover && <img src={article.cover} className="article-cover" alt="" />}
               </div>
             </div>
           </div>

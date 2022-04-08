@@ -24,7 +24,7 @@
     // 标题
     title: string,
     // 封面
-    cover: any
+    cover: string
   }
 
   // 文章枚举类型
@@ -47,7 +47,7 @@
     subType: "react",
     text: "这是文章的内容, 讲述了 react 的使用方法, 以及一些进阶教程.",
     title: "react 怎么学?",
-    cover: binary // 二进制文件
+    cover: 'https://www.baidu.com' // 二进制文件
   }
 
 ```

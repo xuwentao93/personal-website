@@ -2,10 +2,10 @@ import axios from 'axios';
 
 const request = axios.create({
   timeout: 10000,
-  // baseURL: 'http://www.xuwentao.com:3000',
+  // baseURL: 'http://www.xuwentao.com',
   baseURL: 'http://1.12.37.251:8080',
   headers: {
-    'Content-type': 'application/x-www-form-urlencoded'
+    'Content-type': 'application/json'
   }
 });
 
