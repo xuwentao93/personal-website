@@ -4,6 +4,7 @@
   background-color: #fff;
 
   .article {
+    height: 122px;
     padding: 12px 20px;
     border-bottom: 1px solid #eee;
     cursor: pointer;
@@ -11,15 +12,6 @@
 
     &:hover {
       background-color: #eee;
-    }
-  }
-
-  .type-container {
-    margin-bottom: 3px;
-    font-size: 13px;
-
-    .sub-type {
-      color: #999;
     }
   }
 
@@ -65,12 +57,29 @@
         .eye {
           width: 16px;
           height: 16px;
-          margin-right: 6px;
+          margin-right: 4px;
           fill: #4e5969;
         }
     
         .view {
+          margin-top: -1px;
           margin-right: 20px;
+        }
+
+        .time {
+          margin-right: 20px;
+        }
+
+        .sub-type {
+          // 因为文本有默认行高, 导致文字上下区域会留白, 无法完全居中, 需要用 line-height = font-size 消除.
+          line-height: 16px;
+          color: #999;
+
+          &::before {
+            content: '·';
+            color: #999;
+            margin: 0 6px;
+          }
         }
       }
     }
@@ -79,8 +88,8 @@
       margin-left: 24px;
 
       .article-cover {
-        width: 144px;
-        height: 96px;
+        width: 135px;
+        height: 90px;
       }
     }
   }

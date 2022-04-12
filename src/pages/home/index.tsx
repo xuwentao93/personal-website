@@ -1,15 +1,22 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Navigation from '@/components/NewNavigation';
 import { ArticleType } from '@/constant/enum';
 import { getArticleList } from '@/api';
 import { titleListMap, TitieListType } from '@/constant';
+import Loading from '@/components/Loading';
 import ArticleList, { Article } from './components/article';
 import './index.less';
 
 export default function Home() {
   const [titleList, setTitleList] = useState<TitieListType[]>([]);
   const [articleList, setArticleList] = useState<Article[]>([]);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [reachBottom, setReachBottom] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
+
+  const main = useRef<HTMLDivElement>(null);
 
   const methods = {
     selectTitle(code: number, i: number) {
@@ -22,16 +29,33 @@ export default function Home() {
       methods.getArticleList(code);
     },
     getArticleList(type: ArticleType) {
+      setLoading(true);
       getArticleList({
-        type
+        type,
+        page
+        // pageSize: 1
       }).then((res: any) => {
+        setLoading(false);
         if (res.success) {
-          setArticleList(res.data);
+          if (res?.data?.records) {
+            if (res?.data?.records?.length + articleList.length === res.data.totalCount) setReachBottom(true);
+            else setReachBottom(false);
+            setTotalCount(res.data.totalCount || 0);
+            setArticleList(res?.data?.records || []);
+          }
         }
+      }).catch(err => {
+        console.error(err);
+        setLoading(false);
       });
     },
-    focusInput() {
-
+    getMoreArticleList() {
+      if (articleList.length === totalCount || loading) return;
+      const { scrollTop, offsetHeight, scrollHeight } = (main.current as HTMLDivElement);
+      if (scrollTop + offsetHeight + 200 > scrollHeight) {
+        setPage(page + 1);
+        methods.getArticleList(page + 1);
+      }
     }
   };
 
@@ -45,22 +69,33 @@ export default function Home() {
   return (
     <div className="personal-home-page">
       <Navigation />
-      <div className="center">
-        <div className="title-list-container">
-          <div className="title-list">
-            {titleList.map((title, i) => (
-              <div
-                className="title"
-                key={title.code}
-                onClick={() => methods.selectTitle(title.code, i)}
-                style={title.selected ? { color: '#49f' } : {}}
-              >
-                {title.text}
-              </div>
-            ))}
-          </div>
+      <div className="title-list-container">
+        <div className="title-list">
+          {titleList.map((title, i) => (
+            <div
+              className="title"
+              key={title.code}
+              onClick={() => methods.selectTitle(title.code, i)}
+              style={title.selected ? { color: '#49f' } : {}}
+            >
+              {title.text}
+            </div>
+          ))}
         </div>
-        <ArticleList articleList={articleList} />
+      </div>
+      <div className="main" ref={main} onScroll={methods.getMoreArticleList}>
+        <div className="center">
+          <ArticleList articleList={articleList} />
+          {loading && (
+            <div className="loading-container">
+              <Loading loading={loading} />
+              <div className="loading-text">加载中...</div>
+            </div>
+          )}
+          {reachBottom && (
+            <div className="bottom-text">已经到底啦!</div>
+          )}
+        </div>
       </div>
     </div>
   );

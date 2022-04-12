@@ -1,22 +1,22 @@
 .personal-home-page {
+  overflow: hidden;
   padding-bottom: 20px;
   background-color: #f5f5f5;
-
-  .center {
-    width: 700px;
-    margin: 0 auto;
-  }
+  height: 100vh;
 
   .title-list-container {
     height: 56px;
+    padding: 0 calc(50% - 270px);
+    border-bottom: 1px solid #eee;
     line-height: 56px;
+    background-color: #fff;
 
     .title-list {
       display: flex;
       margin: 0 auto;
+      justify-content: space-between;
 
       .title {
-        margin-left: 40px;
         font-size: 14px;
         color: #666;
         transition: color .2s;
@@ -27,5 +27,34 @@
         }
       }
     }
+  }
+
+  .main {
+    overflow: scroll;
+    padding: 20px 0;
+    height: calc(100vh - 120px);
+  }
+
+  .center {
+    width: 700px;
+    margin: 0 auto;
+  }
+
+  .loading-container {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    margin: 0 auto;
+    color: #666;
+    fill: #666;
+
+    .loading-text {
+      margin-left: 6px;
+    }
+  }
+
+  .bottom-text {
+    text-align: center;
+    color: #666;
   }
 }

@@ -38,7 +38,7 @@ const typeMap = {
   },
   [ArticleType.other]: {
     text: '其他',
-    color: '#f3f3f3'
+    color: '#f66'
   }
 };
 
@@ -53,10 +53,6 @@ export default function ArticleList(props: ArticleProp) {
       {articleList.map((article: Article) => (
         <div className="article-list" key={article.id}>
           <div className="article" onClick={() => window.open(`./article/${article.id}`)}>
-            <div className="type-container">
-              <span style={{ color: typeMap[article.type].color }}>{typeMap[article.type].text}</span>
-              {article.subtype && (<span className="sub-type">{' · ' + article.subtype}</span>)}
-            </div>
             <div className="article-info">
               <div className="article-left-message">
                 <div className="title">{article.title}</div>
@@ -70,6 +66,8 @@ export default function ArticleList(props: ArticleProp) {
                   </svg>
                   <div className="view">{article.view}</div>
                   <div className="time">{dateFormat(article.time)}</div>
+                  <span style={{ color: typeMap[article.type]?.color }}>{typeMap[article.type]?.text}</span>
+                  {article.subtype && (<span className="sub-type">{article.subtype}</span>)}
                 </div>
               </div>
               <div className="article-right-message">

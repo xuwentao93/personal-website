@@ -5,6 +5,7 @@ import {
   useMemo,
   useReducer
 } from 'react';
+import { useHistory } from 'react-router-dom';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import Markdown from 'react-markdown';
@@ -19,9 +20,11 @@ import { ArticleType } from '@/constant/enum';
 import { reducer, initialParams, writeType } from './constant';
 import './index.less';
 
-const mdParser = new MarkdownIt(/* Markdown-it options */);
+const mdParser = new MarkdownIt();
 
 export default function Write() {
+  const history = useHistory();
+
   const [modal, setModal] = useState(false);
   // eslint-disable-next-line max-len
   const [tagList, setTagList] = useState<TitieListType[]>(titleListMap.filter(item => item.code !== ArticleType.all && item.code !== ArticleType.current));
@@ -111,7 +114,8 @@ export default function Write() {
         message.error('标题不能为空!');
         return;
       }
-      if (!writeParams.type) {
+      // 前端的枚举值是 0, 需要额外注意.
+      if (!writeParams.type && writeParams.type !== ArticleType.frontend) {
         message.error('类型不能为空!');
         return;
       }
@@ -123,6 +127,7 @@ export default function Write() {
         if (res.success) {
           setModal(false);
           message.success('上传成功!');
+          history.push('./home?type=current');
         } else {
           message.error(res.message || '上传失败!');
         }
@@ -140,7 +145,10 @@ export default function Write() {
           <input
             className="title-input"
             placeholder="请输入标题, 最多十六字"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => methods.setTitle(e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWriteParams({
+              type: writeType.title,
+              value: e.target.value
+            })}
           />
         </div>
         <div className="button" onClick={() => setModal(true)}>
@@ -192,6 +200,20 @@ export default function Write() {
                     type: writeType.cover,
                     value: e.target.value
                   })}
+                  style={{ width: '450px' }}
+                />
+              </div>
+            </div>
+            <div className="modal-line">
+              <div className="title">文章简介:</div>
+              <div className="value">
+                <input
+                  className="wt-input"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWriteParams({
+                    type: writeType.brief,
+                    value: e.target.value
+                  })}
+                  style={{ width: '450px' }}
                 />
               </div>
             </div>

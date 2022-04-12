@@ -2,7 +2,9 @@ import request from '@/utils/request';
 import { ArticleType } from '@/constant/enum';
 
 export interface GetArticleListType {
-  type: ArticleType
+  type: ArticleType,
+  page: number,
+  pageSize?: number
 }
 
 export interface GetArticleType {
@@ -18,7 +20,8 @@ export interface WriteArticleType {
   subtype?: string,
   text: string,
   title: string,
-  cover?: string
+  cover?: string,
+  brief?: string
 }
 
 export interface CheckIdentifyType {
@@ -35,7 +38,7 @@ export const getArticle = (params: GetArticleType) => request.get('/article/get'
 export const viewArticle = (params: { id: string }) => request.get('/article/view', { params });
 
 // 获取查询列表.
-export const getSearchList = (params: SearchArticleType) => request.get('​/article​/getSearchList', { params });
+export const getSearchList = (params: SearchArticleType) => request.get('/article/getSearchList', { params });
 
 // 写文章.
 export const writeArticle = (data: WriteArticleType) => request.post('/article/write', data);

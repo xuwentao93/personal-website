@@ -5,23 +5,28 @@ import './index.less';
 interface MessageProps {
   text: string | number,
   background: string,
-  color: string
+  color: string,
+  borderColor: string
 }
 
 function Message(props: MessageProps) {
-  const { background, color, text } = props;
+  const {
+    background, color, text, borderColor
+  } = props;
 
   return (
-    <div className="personal-message-component" style={{ background, color }}>{text}</div>
+    <div className="personal-message-component" style={{ background, color, borderColor }}>
+      {text}
+    </div>
   );
 }
 
 const message = {
-  show(text: string | number, background: string, color: string) {
+  show(text: string | number, background: string, color: string, borderColor: string) {
     const div = document.createElement('div');
     document.body.appendChild(div);
     ReactDOM.render(
-      <Message background={background} color={color} text={text} />,
+      <Message background={background} color={color} text={text} borderColor={borderColor} />,
       div
     );
     setTimeout(() => {
@@ -29,16 +34,16 @@ const message = {
     }, 2000);
   },
   success(text: string | number) {
-    message.show(text, '#67C23A', '#fff');
+    message.show(text, '#f6ffed', '#333', '#b7eb8f');
   },
   info(text: string | number) {
-    message.show(text, '#49f', '#fff');
+    message.show(text, '#e6f7ff', '#333', '#91d5ff');
   },
   warn(text: string | number) {
-    message.show(text, '#e6a23c', '#fff');
+    message.show(text, '#fffbe6', '#333', '#ffe58f');
   },
   error(text: string | number) {
-    message.show(text, '#f56c6c', '#fff');
+    message.show(text, '#fff2f0', '#333', '#ffccc7');
   }
 };
 

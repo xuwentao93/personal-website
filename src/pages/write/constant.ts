@@ -7,7 +7,8 @@ export enum writeType {
   cover = 'cover',
   type = 'type',
   subtype = 'subtype',
-  text = 'text'
+  text = 'text',
+  brief = 'brief'
 }
 
 interface WriteAction {
@@ -20,7 +21,8 @@ export const initialParams: WriteArticleType = {
   subtype: '',
   cover: '',
   text: '',
-  title: ''
+  title: '',
+  brief: ''
 };
 
 export function reducer(state: WriteArticleType, action: WriteAction) {
