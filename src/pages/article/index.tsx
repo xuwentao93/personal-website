@@ -33,7 +33,6 @@ export default function Article() {
   const methods = {
     getArticle() {
       getArticle({ id }).then((res: any) => {
-        console.log(res);
         if (res.success) {
           setArticle(res.data);
         }

@@ -6,14 +6,20 @@ export interface GetArticleListType {
   page: number,
   pageSize?: number
 }
+// 根据类型查询文章列表.
+export const getArticleList = (params: GetArticleListType) => request.get('/article/list', { params });
 
 export interface GetArticleType {
   id: string
 }
+// 获取文章内容.
+export const getArticle = (params: GetArticleType) => request.get('/article/get', { params });
 
 export interface SearchArticleType {
   content: string
 }
+// 获取查询列表.
+export const getSearchList = (params: SearchArticleType) => request.get('/article/getSearchList', { params });
 
 export interface WriteArticleType {
   type: ArticleType,
@@ -21,27 +27,38 @@ export interface WriteArticleType {
   text: string,
   title: string,
   cover?: string,
-  brief?: string
+  brief?: string,
+  code: string
 }
+// 写文章.
+export const writeArticle = (data: WriteArticleType) => request.post('/article/write', data);
 
 export interface CheckIdentifyType {
   code: string
 }
-
-// 根据类型查询文章列表.
-export const getArticleList = (params: GetArticleListType) => request.get('/article/list', { params });
-
-// 获取文章内容.
-export const getArticle = (params: GetArticleType) => request.get('/article/get', { params });
+// 身份校验.
+export const checkIdentify = (data: CheckIdentifyType) => request.post('/auth/checkIdentify', data);
 
 // 增加浏览量.
 export const viewArticle = (params: { id: string }) => request.get('/article/view', { params });
+export interface SaveDraftType {
+  title?: string,
+  text: string
+}
+// 保存到草稿箱.
+export const saveDraft = (data: SaveDraftType) => request.post('/article/saveDraft', data);
 
-// 获取查询列表.
-export const getSearchList = (params: SearchArticleType) => request.get('/article/getSearchList', { params });
+// 从草稿箱里面获取内容.
+export const getDraft = () => request.get('/article/getDraft');
 
-// 写文章.
-export const writeArticle = (data: WriteArticleType) => request.post('/article/write', data);
+export interface DeleteArticleType {
+  id: string
+}
+// 删除文章.
+export const deleteArticle = (data: DeleteArticleType) => request.post('/article/delete', data);
 
-// 身份校验.
-export const checkIdentify = (data: CheckIdentifyType) => request.post('/auth/checkIdentify', data);
+export interface ModifyArticle extends WriteArticleType{
+  id: string
+}
+// 修改文章.
+export const modifyArticle = (data: ModifyArticle) => request.post('/article/modify', data);

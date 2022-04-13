@@ -9,7 +9,6 @@ interface SearchList {
 }
 
 export default function NewNavigation() {
-
   const [focus, setFocus] = useState(false);
   const [searchList, setSearchList] = useState<SearchList[]>([]);
   const [showSearchList, setShowSearchList] = useState(false);

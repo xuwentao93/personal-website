@@ -8,7 +8,8 @@ export enum writeType {
   type = 'type',
   subtype = 'subtype',
   text = 'text',
-  brief = 'brief'
+  brief = 'brief',
+  code = 'code'
 }
 
 interface WriteAction {
@@ -22,10 +23,17 @@ export const initialParams: WriteArticleType = {
   cover: '',
   text: '',
   title: '',
-  brief: ''
+  brief: '',
+  code: ''
 };
 
 export function reducer(state: WriteArticleType, action: WriteAction) {
+  if (action.type === 'all') {
+    return {
+      ...state,
+      ...(action.value as Object)
+    };
+  }
   return {
     ...state,
     [action.type]: action.value

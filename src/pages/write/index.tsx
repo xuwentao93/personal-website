@@ -3,6 +3,7 @@ import {
   useState,
   useRef,
   useMemo,
+  useEffect,
   useReducer
 } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -13,17 +14,26 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import rehypeRaw from 'rehype-raw';
 import 'react-markdown-editor-lite/lib/index.css';
 import { titleListMap, TitieListType } from '@/constant';
-import { writeArticle } from '@/api';
+import {
+  getArticle,
+  getDraft,
+  modifyArticle,
+  saveDraft,
+  writeArticle
+} from '@/api';
 import Tag from '@/components/Tag';
 import message from '@/components/Message';
 import { ArticleType } from '@/constant/enum';
+import { getQueryString } from '@/utils';
 import { reducer, initialParams, writeType } from './constant';
 import './index.less';
 
 const mdParser = new MarkdownIt();
+let timer: number;
 
 export default function Write() {
   const history = useHistory();
+  const id = getQueryString('id');
 
   const [modal, setModal] = useState(false);
   // eslint-disable-next-line max-len
@@ -34,19 +44,25 @@ export default function Write() {
 
   const methods = {
     write({ text }: any) {
+      clearTimeout(timer);
       setWriteParams({
         type: writeType.text,
         value: text
       });
+      timer = window.setTimeout(methods.saveDraft, 2000);
     },
     sychronizeScroll(type: 'editor' | 'view') {
       const textarea = document.getElementsByName('textarea')[0];
       // 不做类型断言会被判断为 null.
-      const { scrollTop } = (view.current as HTMLDivElement);
+      const { scrollTop, offsetHeight, scrollHeight } = (view.current as HTMLDivElement);
+      // 注意这里必须一个 ceil 一个 floor, 否则文章会以 1px 下/上移.
       if (type === 'editor') {
-        (view.current as HTMLDivElement).scrollTop = textarea.scrollTop;
+        (view.current as HTMLDivElement).scrollTop
+          // eslint-disable-next-line max-len
+          = Math.ceil((textarea.scrollTop * (scrollHeight - offsetHeight)) / (textarea.scrollHeight - textarea.offsetHeight));
       } else if (type === 'view') {
-        textarea.scrollTop = scrollTop;
+        textarea.scrollTop
+          = Math.floor((scrollTop * (textarea.scrollHeight - textarea.offsetHeight)) / (scrollHeight - offsetHeight));
       }
     },
     setTitle(e: React.ChangeEvent<HTMLInputElement>) {
@@ -123,6 +139,20 @@ export default function Write() {
         message.error('文章内容不能为空!');
         return;
       }
+      if (id) {
+        modifyArticle({
+          ...writeParams,
+          id
+        }).then((res: any) => {
+          if (res.success) {
+            setModal(false);
+            message.success('修改成功!');
+            history.push('./home');
+          } else {
+            message.error(res.message || '上传失败!');
+          }
+        });
+      }
       writeArticle(writeParams).then((res: any) => {
         if (res.success) {
           setModal(false);
@@ -132,10 +162,49 @@ export default function Write() {
           message.error(res.message || '上传失败!');
         }
       });
+    },
+    getDraft() {
+      if (id) {
+        getArticle({ id })
+          .then((res: any) => {
+            if (res.success) {
+              setWriteParams({
+                value: res.data,
+                type: 'all'
+              });
+            }
+          })
+          .catch(err => console.error(err));
+      } else {
+        getDraft().then((res: any) => {
+          if (res.success) {
+            setWriteParams({
+              value: res.data,
+              type: 'all'
+            });
+          }
+        });
+      }
+    },
+    saveDraft() {
+      saveDraft({
+        title: writeParams.title,
+        text: writeParams.text
+      })
+        .then((res: any) => {
+          if (res.success) {
+            // 提示保存成功.
+          }
+        })
+        .catch(err => console.error(err));
     }
   };
 
   const renderWrite = useMemo(methods.renderWrite, [writeParams.text]);
+
+  useEffect(() => {
+    // methods.getDraft();
+  }, []);
 
   return (
     <div className="personal-write-page">
@@ -160,8 +229,8 @@ export default function Write() {
       {renderWrite}
 
       {modal && (
-        <div className="block">
-          <div className="center-box">
+        <div className="block" onClick={() => setModal(false)}>
+          <div className="center-box" onClick={e => e.stopPropagation()}>
             <svg viewBox="0 0 1045 1024" width="16" height="16" className="close-icon" onClick={() => setModal(false)}>
               {/* eslint-disable-next-line max-len */}
               <path d="M282.517333 213.376l-45.354666 45.162667L489.472 512 237.162667 765.461333l45.354666 45.162667L534.613333 557.354667l252.096 253.269333 45.354667-45.162667-252.288-253.44 252.288-253.482666-45.354667-45.162667L534.613333 466.624l-252.096-253.226667z" p-id="6736" fill="#8a8a8a" />
@@ -180,9 +249,23 @@ export default function Write() {
               </div>
             </div>
             <div className="modal-line">
+              <div className="title">密码:</div>
+              <div className="value">
+                <input
+                  value={writeParams.code}
+                  className="wt-input"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWriteParams({
+                    type: writeType.code,
+                    value: e.target.value
+                  })}
+                />
+              </div>
+            </div>
+            <div className="modal-line">
               <div className="title">子类型:</div>
               <div className="value">
                 <input
+                  value={writeParams.subtype}
                   className="wt-input"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWriteParams({
                     type: writeType.subtype,
@@ -196,6 +279,7 @@ export default function Write() {
               <div className="value">
                 <input
                   className="wt-input"
+                  value={writeParams.cover}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWriteParams({
                     type: writeType.cover,
                     value: e.target.value
@@ -208,6 +292,7 @@ export default function Write() {
               <div className="title">文章简介:</div>
               <div className="value">
                 <input
+                  value={writeParams.type}
                   className="wt-input"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWriteParams({
                     type: writeType.brief,
