@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import './index.less';
 import Navigation from '@/components/Navigation';
+import Signature from '@/components/Signature';
 
 export default function Cover() {
   const history = useHistory();
@@ -36,7 +37,7 @@ export default function Cover() {
             大家好，我是徐文韬，是一名前端工程师，定位杭州。生活很美好，希望大家能好好享受生活。
           </div>
         </div>
-        <div className="signature">Crafted by Wentao Xu | © 2021</div>
+        <Signature />
       </div>
     </div>
   );

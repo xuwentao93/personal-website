@@ -5,6 +5,7 @@ import { ArticleType } from '@/constant/enum';
 import { getArticleList } from '@/api';
 import { titleListMap, TitieListType } from '@/constant';
 import Loading from '@/components/Loading';
+import Signature from '@/components/Signature';
 import ArticleList, { Article } from './components/article';
 import './index.less';
 
@@ -96,6 +97,7 @@ export default function Home() {
             <div className="bottom-text">已经到底啦!</div>
           )}
         </div>
+        <Signature />
       </div>
     </div>
   );

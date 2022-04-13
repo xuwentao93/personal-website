@@ -5,6 +5,7 @@ import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import rehypeRaw from 'rehype-raw';
 import Navigation from '@/components/NewNavigation';
+import Signature from '@/components/Signature';
 import { dateFormat } from '@/utils';
 import { getArticle, viewArticle } from '@/api';
 import { ArticleType } from '@/constant/enum';
@@ -98,6 +99,7 @@ export default function Article() {
           {article.content}
         </Markdown>
       </div>
+      <Signature />
     </div>
   );
 }
