@@ -19,7 +19,8 @@ import {
   getDraft,
   modifyArticle,
   saveDraft,
-  writeArticle
+  writeArticle,
+  login
 } from '@/api';
 import Tag from '@/components/Tag';
 import message from '@/components/Message';
@@ -37,6 +38,8 @@ export default function Write() {
   const id = getQueryString('id');
 
   const [modal, setModal] = useState(false);
+  const [loginModal, setLoginModal] = useState(false);
+  const [code, setCode] = useState('');
   // eslint-disable-next-line max-len
   const [tagList, setTagList] = useState<TitieListType[]>(titleListMap.filter(item => item.code !== ArticleType.all && item.code !== ArticleType.current));
   const [writeParams, setWriteParams] = useReducer(reducer, initialParams);
@@ -67,8 +70,8 @@ export default function Write() {
       }
     },
     setTitle(e: React.ChangeEvent<HTMLInputElement>) {
-      if (e.target.value.length > 16) {
-        message.error('标题的长度必须在 16 以内!');
+      if (e.target.value.length > 18) {
+        message.error('标题的长度必须在 18 以内!');
         return;
       }
       clearTimeout(timer);
@@ -158,6 +161,7 @@ export default function Write() {
             message.error(res.message || '上传失败!');
           }
         });
+        return;
       }
       writeArticle(writeParams).then((res: any) => {
         if (res.success) {
@@ -178,6 +182,15 @@ export default function Write() {
                 value: res.data,
                 type: 'all'
               });
+              console.log(res.data.type, tagList);
+              let num = 0;
+              for (let i = 0; i < tagList.length; i++) {
+                if (tagList[i].code === res.data.type) {
+                  num = i;
+                  break;
+                }
+              }
+              methods.selectedTag(res.data.type, num);
             }
           })
           .catch(err => console.error(err));
@@ -203,12 +216,27 @@ export default function Write() {
           }
         })
         .catch(err => console.error(err));
+    },
+    login() {
+      login({ code }).then((res: any) => {
+        if (res.success) {
+          setLoginModal(false);
+          localStorage.setItem('code', res.data);
+        } else {
+          message.error(res.message || '登录失败!');
+        }
+      });
     }
   };
 
   const renderWrite = useMemo(methods.renderWrite, [writeParams.text]);
 
   useEffect(() => {
+    const code = localStorage.getItem('code') || '';
+    setWriteParams({
+      type: writeType.code,
+      value: code
+    });
     methods.getDraft();
   }, []);
 
@@ -223,6 +251,10 @@ export default function Write() {
             onChange={methods.setTitle}
             value={writeParams.title}
           />
+        </div>
+        <div className="button" onClick={() => setLoginModal(true)}>
+          <span style={{ marginRight: '6px' }}>登</span>
+          <span>录</span>
         </div>
         <div className="button" onClick={() => setModal(true)}>
           <span style={{ marginRight: '6px' }}>上</span>
@@ -250,19 +282,6 @@ export default function Write() {
                     onClick={() => methods.selectedTag(tag.code, i)}
                   />
                 ))}
-              </div>
-            </div>
-            <div className="modal-line">
-              <div className="title">密码:</div>
-              <div className="value">
-                <input
-                  value={writeParams.code}
-                  className="wt-input"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWriteParams({
-                    type: writeType.code,
-                    value: e.target.value
-                  })}
-                />
               </div>
             </div>
             <div className="modal-line">
@@ -306,8 +325,26 @@ export default function Write() {
                 />
               </div>
             </div>
+            <div className="button" onClick={methods.writeArticle}>确认</div>
           </div>
-
+        </div>
+      )}
+      {loginModal && (
+        <div className="block">
+          <div className="center-box">
+            <div className="modal-line">
+              <div className="title">密码:</div>
+              <div className="value">
+                <input
+                  value={code}
+                  className="wt-input"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
+                  style={{ width: '450px' }}
+                />
+              </div>
+            </div>
+            <div className="button" onClick={methods.login}>确认</div>
+          </div>
         </div>
       )}
       <Signature />

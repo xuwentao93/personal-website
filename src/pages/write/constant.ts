@@ -14,7 +14,7 @@ export enum writeType {
 
 interface WriteAction {
   type: string,
-  value: number | string
+  value: number | string | object
 }
 
 export const initialParams: WriteArticleType = {

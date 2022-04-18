@@ -48,7 +48,7 @@ export default function ArticleList(props: ArticleProp) {
   return (
     <div className="personal-article-list-component-page">
       {articleList.length === 0 && (
-        <div>啊没有资源</div>
+        <div className="no-data">这个标签下暂时还没有文章</div>
       )}
       {articleList.map((article: Article) => (
         <div className="article-list" key={article.id}>

@@ -7,9 +7,10 @@ import rehypeRaw from 'rehype-raw';
 import Navigation from '@/components/NewNavigation';
 import Signature from '@/components/Signature';
 import { dateFormat } from '@/utils';
-import { getArticle, viewArticle } from '@/api';
+import { getArticle, viewArticle, deleteArticle } from '@/api';
 import { ArticleType } from '@/constant/enum';
 import './index.less';
+import message from '@/components/Message';
 
 interface ArticleMsgType {
   // 文章内容, markdown 字符串和
@@ -28,6 +29,7 @@ interface ArticleMsgType {
 
 export default function Article() {
   const { id } = (useParams() as any);
+  const code = localStorage.getItem('code');
 
   const [article, setArticle] = useState<ArticleMsgType>(({} as ArticleMsgType));
 
@@ -41,6 +43,22 @@ export default function Article() {
     },
     viewArticle() {
       viewArticle({ id });
+    },
+    modify() {
+      window.open(`/write?id=${id}`);
+    },
+    delete() {
+      const code = localStorage.getItem('code');
+      deleteArticle({
+        code,
+        id
+      }).then((res: any) => {
+        if (res.success) {
+          message.success('删除成功!');
+        } else {
+          message.error(res.message || '删除失败');
+        }
+      });
     }
   };
 
@@ -53,7 +71,15 @@ export default function Article() {
     <div className="personal-article-page">
       <Navigation />
       <div className="article-container">
-        <h1>{article.title}</h1>
+        <h1 className="title">
+          <div className="flex1">{article.title}</div>
+          {code && (
+            <>
+              <div className="button button-primary" onClick={methods.modify}>修改</div>
+              <div className="button button-error" onClick={methods.delete}>删除</div>
+            </>
+          )}
+        </h1>
         <div className="msg-container">
           <img
             src="https://img.alicdn.com/imgextra/i3/O1CN01tCQx6r1vGuwZuW4jd_!!6000000006146-2-tps-936-844.png"

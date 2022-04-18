@@ -28,7 +28,7 @@ export interface WriteArticleType {
   title: string,
   cover?: string,
   brief?: string,
-  code: string
+  code: string | null
 }
 // 写文章.
 export const writeArticle = (data: WriteArticleType) => request.post('/article/write', data);
@@ -52,13 +52,21 @@ export const saveDraft = (data: SaveDraftType) => request.post('/draft/save', da
 export const getDraft = () => request.get('/draft/view');
 
 export interface DeleteArticleType {
-  id: string
+  id: string,
+  code: string | null
 }
 // 删除文章.
 export const deleteArticle = (data: DeleteArticleType) => request.post('/article/delete', data);
 
 export interface ModifyArticle extends WriteArticleType{
-  id: string
+  id: string,
 }
 // 修改文章.
 export const modifyArticle = (data: ModifyArticle) => request.post('/article/modify', data);
+
+export interface LoginType {
+  code: string,
+}
+
+// 登录.
+export const login = (data: LoginType) => request.post('/login', data);

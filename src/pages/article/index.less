@@ -1,12 +1,58 @@
 .personal-article-page {
+  position: relative; // 子元素定位用.
   min-height: 100vh;
   padding-bottom: 40px;
   font-size: 16px;
   background-color: #f5f5f5;
 
+  .title {
+    display: flex;
+    align-items: center;
+
+    .button {
+      height: 28px;
+      padding: 0 12px;
+      margin-right: 12px;
+      line-height: 28px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      border-radius: 3px;
+      user-select: none;
+      color: #fff;
+      transition: background .5s, color .5s;
+      cursor: pointer;
+    }
+  }
+
+  .button-primary {
+    background-color: #49f;
+
+    &:hover {
+      background-color: #66b1ff;
+    }
+
+    &:active {
+      background-color: #3a8ee6;
+    }
+  }
+
+  .button-error {
+    background-color: #f56c6c;
+
+    &:hover {
+      background-color: #f78989;
+    }
+
+    &:active {
+      background-color: #dd6161;
+    }
+  }
+
   .article-container {
     box-sizing: border-box;
     width: 820px;
+    min-height: 100vh;
     margin: 20px auto;
     padding: 32px;
     background-color: #fff;

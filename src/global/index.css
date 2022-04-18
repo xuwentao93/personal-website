@@ -57,3 +57,12 @@ hr {
   border-width: 0;
   background-color: #f5f5f5;
 }
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.flex1 {
+  flex: 1;
+}

@@ -8,7 +8,6 @@ import Home from '@/pages/home';
 import Cover from '@/pages/cover';
 import Article from '@/pages/article';
 import Write from '@/pages/write';
-import Operate from '@/pages/operate';
 
 // interface RouteType {
 //   path: string,
@@ -40,12 +39,6 @@ const routes = [
     path: '/write',
     component: Write,
     name: 'write',
-    exact: true
-  },
-  {
-    path: '/operate',
-    component: Operate,
-    name: 'operate',
     exact: true
   }
 ];
