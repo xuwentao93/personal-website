@@ -46,10 +46,10 @@ export interface SaveDraftType {
   text: string
 }
 // 保存到草稿箱.
-export const saveDraft = (data: SaveDraftType) => request.post('/article/saveDraft', data);
+export const saveDraft = (data: SaveDraftType) => request.post('/draft/save', data);
 
 // 从草稿箱里面获取内容.
-export const getDraft = () => request.get('/article/getDraft');
+export const getDraft = () => request.get('/draft/view');
 
 export interface DeleteArticleType {
   id: string

@@ -23,7 +23,7 @@ import {
 } from '@/api';
 import Tag from '@/components/Tag';
 import message from '@/components/Message';
-import Signature from '@/components/signature';
+import Signature from '@/components/Signature';
 import { ArticleType } from '@/constant/enum';
 import { getQueryString } from '@/utils';
 import { reducer, initialParams, writeType } from './constant';
@@ -67,7 +67,12 @@ export default function Write() {
       }
     },
     setTitle(e: React.ChangeEvent<HTMLInputElement>) {
-      if (e.target.value.length > 16) return;
+      if (e.target.value.length > 16) {
+        message.error('标题的长度必须在 16 以内!');
+        return;
+      }
+      clearTimeout(timer);
+      timer = window.setTimeout(methods.saveDraft, 2000);
       setWriteParams({
         type: writeType.title,
         value: e.target.value
@@ -204,7 +209,7 @@ export default function Write() {
   const renderWrite = useMemo(methods.renderWrite, [writeParams.text]);
 
   useEffect(() => {
-    // methods.getDraft();
+    methods.getDraft();
   }, []);
 
   return (
@@ -215,10 +220,8 @@ export default function Write() {
           <input
             className="title-input"
             placeholder="请输入标题, 最多十六字"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWriteParams({
-              type: writeType.title,
-              value: e.target.value
-            })}
+            onChange={methods.setTitle}
+            value={writeParams.title}
           />
         </div>
         <div className="button" onClick={() => setModal(true)}>
@@ -293,7 +296,7 @@ export default function Write() {
               <div className="title">文章简介:</div>
               <div className="value">
                 <input
-                  value={writeParams.type}
+                  value={writeParams.brief}
                   className="wt-input"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWriteParams({
                     type: writeType.brief,
@@ -303,12 +306,11 @@ export default function Write() {
                 />
               </div>
             </div>
-            <Signature />
           </div>
 
         </div>
       )}
-
+      <Signature />
     </div>
   );
 }
