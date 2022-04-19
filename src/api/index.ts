@@ -69,4 +69,4 @@ export interface LoginType {
 }
 
 // 登录.
-export const login = (data: LoginType) => request.post('/login', data);
+export const login = (data: LoginType) => request.post('/auth/login', data);

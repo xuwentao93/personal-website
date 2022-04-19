@@ -222,6 +222,7 @@ export default function Write() {
         if (res.success) {
           setLoginModal(false);
           localStorage.setItem('code', res.data);
+          message.success('登录成功!');
         } else {
           message.error(res.message || '登录失败!');
         }
