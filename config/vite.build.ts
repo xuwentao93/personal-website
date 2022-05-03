@@ -1,16 +1,11 @@
-// import path from 'path';
-
 const buildConfig = {
   build: {
     rollupOptions: {
       output: {
         entryFileNames: 'index.js',
-        chunkFileNames: 'index.js',
-        assetFileNames: '[name].[ext]'
+        chunkFileNames: 'js/index.js',
+        assetFileNames: 'asstes/[name].[ext]'
       }
-      // input: {
-      //   index: path.join(__dirname, '../src/component')
-      // }
     }
   }
 };

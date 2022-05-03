@@ -24,7 +24,6 @@ import {
 } from '@/api';
 import Tag from '@/components/Tag';
 import message from '@/components/Message';
-import Signature from '@/components/Signature';
 import { ArticleType } from '@/constant/enum';
 import { getQueryString } from '@/utils';
 import { reducer, initialParams, writeType } from './constant';
@@ -348,7 +347,6 @@ export default function Write() {
           </div>
         </div>
       )}
-      <Signature />
     </div>
   );
 }

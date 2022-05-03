@@ -3,9 +3,9 @@ import axios from 'axios';
 const request = axios.create({
   timeout: 10000,
   // baseURL: 'http://www.xuwentao.com',
-  baseURL: 'http://1.12.37.251:8080',
+  baseURL: 'https://www.xuwentao.com',
   headers: {
-    'Content-type': 'application/json',
+    'Content-type': 'application/json'
   }
 });
 
