@@ -39,6 +39,7 @@ export default function Write() {
   const [modal, setModal] = useState(false);
   const [loginModal, setLoginModal] = useState(false);
   const [code, setCode] = useState('');
+  const [isLoging, setIsLoging] = useState(false);
   // eslint-disable-next-line max-len
   const [tagList, setTagList] = useState<TitieListType[]>(titleListMap.filter(item => item.code !== ArticleType.all && item.code !== ArticleType.current));
   const [writeParams, setWriteParams] = useReducer(reducer, initialParams);
@@ -221,6 +222,11 @@ export default function Write() {
         if (res.success) {
           setLoginModal(false);
           localStorage.setItem('code', res.data);
+          setWriteParams({
+            type: writeType.code,
+            value: res.data
+          });
+          setIsLoging(true);
           message.success('登录成功!');
         } else {
           message.error(res.message || '登录失败!');
@@ -233,6 +239,7 @@ export default function Write() {
 
   useEffect(() => {
     const code = localStorage.getItem('code') || '';
+    if (code) setIsLoging(true);
     setWriteParams({
       type: writeType.code,
       value: code
@@ -252,11 +259,13 @@ export default function Write() {
             value={writeParams.title}
           />
         </div>
-        <div className="button" onClick={() => setLoginModal(true)}>
-          <span style={{ marginRight: '6px' }}>登</span>
-          <span>录</span>
-        </div>
-        <div className="button" onClick={() => setModal(true)}>
+        {!isLoging && (
+          <div className="button button-primary" onClick={() => setLoginModal(true)}>
+            <span style={{ marginRight: '6px' }}>登</span>
+            <span>录</span>
+          </div>
+        )}
+        <div className="button button-primary" onClick={() => setModal(true)}>
           <span style={{ marginRight: '6px' }}>上</span>
           <span>传</span>
         </div>
@@ -268,11 +277,10 @@ export default function Write() {
         <div className="block" onClick={() => setModal(false)}>
           <div className="center-box" onClick={e => e.stopPropagation()}>
             <svg viewBox="0 0 1045 1024" width="16" height="16" className="close-icon" onClick={() => setModal(false)}>
-              {/* eslint-disable-next-line max-len */}
               <path d="M282.517333 213.376l-45.354666 45.162667L489.472 512 237.162667 765.461333l45.354666 45.162667L534.613333 557.354667l252.096 253.269333 45.354667-45.162667-252.288-253.44 252.288-253.482666-45.354667-45.162667L534.613333 466.624l-252.096-253.226667z" p-id="6736" fill="#8a8a8a" />
             </svg>
             <div className="modal-line">
-              <div className="title">类型:</div>
+              <div className="sub-title">类型:</div>
               <div className="value">
                 {tagList.map((tag, i) => (
                   <Tag
@@ -285,7 +293,7 @@ export default function Write() {
               </div>
             </div>
             <div className="modal-line">
-              <div className="title">子类型:</div>
+              <div className="sub-title">子类型:</div>
               <div className="value">
                 <input
                   value={writeParams.subtype}
@@ -298,7 +306,7 @@ export default function Write() {
               </div>
             </div>
             <div className="modal-line">
-              <div className="title">封面链接:</div>
+              <div className="sub-title">封面链接:</div>
               <div className="value">
                 <input
                   className="wt-input"
@@ -312,7 +320,7 @@ export default function Write() {
               </div>
             </div>
             <div className="modal-line">
-              <div className="title">文章简介:</div>
+              <div className="sub-title">文章简介:</div>
               <div className="value">
                 <input
                   value={writeParams.brief}
@@ -325,15 +333,22 @@ export default function Write() {
                 />
               </div>
             </div>
-            <div className="button" onClick={methods.writeArticle}>确认</div>
+            <div className="button-container">
+              <div className="button button-primary" onClick={methods.writeArticle}>确认</div>
+              <div className="button button-normal" onClick={() => setModal(false)}>取消</div>
+            </div>
           </div>
         </div>
       )}
       {loginModal && (
         <div className="block">
           <div className="center-box">
+            <svg viewBox="0 0 1045 1024" width="16" height="16" className="close-icon" onClick={() => setLoginModal(false)}>
+              <path d="M282.517333 213.376l-45.354666 45.162667L489.472 512 237.162667 765.461333l45.354666 45.162667L534.613333 557.354667l252.096 253.269333 45.354667-45.162667-252.288-253.44 252.288-253.482666-45.354667-45.162667L534.613333 466.624l-252.096-253.226667z" p-id="6736" fill="#8a8a8a" />
+            </svg>
+            <div className="title">输入密码以登录</div>
             <div className="modal-line">
-              <div className="title">密码:</div>
+              <div className="sub-title">密码:</div>
               <div className="value">
                 <input
                   value={code}
@@ -343,7 +358,10 @@ export default function Write() {
                 />
               </div>
             </div>
-            <div className="button" onClick={methods.login}>确认</div>
+            <div className="button-container">
+              <div className="button button-primary" onClick={methods.login}>确认</div>
+              <div className="button button-normal" onClick={() => setLoginModal(false)}>取消</div>
+            </div>
           </div>
         </div>
       )}
