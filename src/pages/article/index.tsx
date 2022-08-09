@@ -14,7 +14,7 @@ import message from '@/components/Message';
 
 interface ArticleMsgType {
   // 文章内容, markdown 字符串和
-  content: string,
+  text: string,
   // 写作时间
   time: number,
   // 文章标题
@@ -71,8 +71,8 @@ export default function Article() {
     <div className="personal-article-page">
       <Navigation />
       <div className="article-container">
-        <h1 className="title">
-          <div className="flex1">{article.title}</div>
+        <h1 className="title-container">
+          <div className="title">{article.title}</div>
           {code && (
             <>
               <div className="button button-primary" onClick={methods.modify}>修改</div>
@@ -122,10 +122,9 @@ export default function Article() {
             }
           }}
         >
-          {article.content}
+          {article.text}
         </Markdown>
       </div>
-      <Signature />
     </div>
   );
 }
