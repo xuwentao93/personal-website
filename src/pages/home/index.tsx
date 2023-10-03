@@ -5,6 +5,7 @@ import { ArticleType } from '@/constant/enum';
 import { getArticleList } from '@/api';
 import { titleListMap, TitieListType } from '@/constant';
 import Loading from '@/components/Loading';
+import LeftDecoration from './components/leftDecoration';
 import ArticleList, { Article } from './components/article';
 import './index.less';
 
@@ -84,6 +85,7 @@ export default function Home() {
         </div>
       </div>
       <div className="main" ref={main} onScroll={methods.getMoreArticleList}>
+        <LeftDecoration />
         <div className="center">
           <ArticleList articleList={articleList} />
           {loading && (
