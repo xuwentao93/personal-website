@@ -15,8 +15,8 @@ interface DataType {
   type: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   score: number | '-';
   personalScore: number | '-';
-  brief: string;
-  evaluate: string;
+  theme: string;
+  empathy: string;
 }
 
 export default function BoardGame() {
@@ -211,12 +211,12 @@ export default function BoardGame() {
         dataIndex: 'time'
       },
       {
-        title: '简介',
-        dataIndex: 'brief'
+        title: '主题',
+        dataIndex: 'theme'
       },
       {
-        title: '评价',
-        dataIndex: 'evaluate'
+        title: '代入感',
+        dataIndex: 'empathy'
       }
     ]);
   }

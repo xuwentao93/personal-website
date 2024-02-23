@@ -9,6 +9,7 @@ import Cover from '@/pages/cover';
 import Article from '@/pages/article';
 import Write from '@/pages/write';
 import Mahjong from '@/pages/mahjong';
+import Test from '@/pages/test';
 import BoardGame from '@/pages/boardGame';
 
 // interface RouteType {
@@ -53,6 +54,12 @@ const routes = [
     path: '/boardGame',
     component: BoardGame,
     name: 'boardGame',
+    exact: true
+  },
+  {
+    path: '/test',
+    component: Test,
+    name: 'test',
     exact: true
   }
 ];
