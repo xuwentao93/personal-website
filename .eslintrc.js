@@ -48,7 +48,8 @@ module.exports = {
     'react/require-default-props': 0,
     'no-shadow': 0,
     'react/jsx-props-no-spreading': 0,
-    'operator-linebreak': 0
+    'operator-linebreak': 0,
+    'no-unused-vars': 0
     // 'import/no-unresolved': 0,
   }
 }
