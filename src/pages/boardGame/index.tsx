@@ -197,9 +197,7 @@ export default function BoardGame() {
       title: '个人评分',
       dataIndex: 'personalScore',
       sorter: {
-        compare: (a: DataType, b: DataType) => (Number(a.personalScore) === Number(b.personalScore)
-          ? Number(a.score) - Number(b.score)
-          : Number(a.personalScore) - Number(b.personalScore))
+        compare: (a: DataType, b: DataType) => (Number(a.personalScore) - Number(b.personalScore))
       }
     }
   ];

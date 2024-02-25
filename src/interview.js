@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-extend-native */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable class-methods-use-this */
@@ -275,23 +277,142 @@ const resolvePromise = (promise, x, resolve, reject) => {
 const isObject = target => (typeof target === 'object' || typeof target === 'function') && target !== null;
 
 export function deepClone(target, map = new Map()) {
-  // 已有的直接赋值, 对于有相同引用的对象是加速了.
-  if (map.get(target)) return target;
+  // map 的用意是保证相同引用的对象在 copy 之后, 仍然保持相同引用, 并且这里可以加速 copy.
+  if (map.get(target)) return map.get(target);
 
-  const { constructor } = target;
+  const constructor = target?.constructor;
   if (/^(RegExp|Date)$/i.test(constructor)) {
     return new constructor(target);
   }
 
   if (isObject(target)) {
-    map.set(target, true);
     const result = Array.isArray(target) ? [] : {};
     for (let key in target) {
       if (target.hasOwnProperty(key)) {
-        result[key] = deepClone(result[key], map);
+        result[key] = deepClone(target[key], map);
       }
     }
-  } else {
-    return target;
+    map.set(target, result);
+    return result;
   }
+
+  return target;
 }
+
+// 4. 手写数组原生函数.
+
+Array.prototype.forEach2 = function (callback, thisArg) {
+  if (this === null) {
+    throw new TypeError('this is null or not defined');
+  }
+  if (typeof callback !== 'function') {
+    throw new TypeError(callback + ' is not a function');
+  }
+
+  const arr = Object(this);
+
+  for (let i = 0; i < arr.length; i++) {
+    callback.call(thisArg, arr[i], i, arr);
+  }
+};
+
+Array.prototype.map2 = function (callback, thisArg) {
+  if (this === null) {
+    throw new TypeError('this is null or not defined');
+  }
+  if (typeof callback !== 'function') {
+    throw new TypeError(callback + ' is not a function');
+  }
+
+  const arr = Object(this);
+  const result = [];
+  for (let i = 0; i < arr.length; i++) {
+    result[i] = callback.call(thisArg, arr[i], i, arr);
+  }
+  return result;
+};
+
+Array.prototype.filter2 = function (callback, thisArg) {
+  if (this === null) {
+    throw new TypeError('this is null or not defined');
+  }
+  if (typeof callback !== 'function') {
+    throw new TypeError(callback + ' is not a function');
+  }
+
+  const arr = Object(this);
+  const result = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (callback.call(thisArg, arr[i], i, arr)) {
+      result.push(arr[i]);
+    }
+  }
+  return result;
+};
+
+Array.prototype.some2 = function (callback, thisArg) {
+  if (this === null) {
+    throw new TypeError('this is null or not defined');
+  }
+  if (typeof callback !== 'function') {
+    throw new TypeError(callback + ' is not a function');
+  }
+
+  const arr = Object(this);
+  for (let i = 0; i < arr.length; i++) {
+    if (callback.call(thisArg, arr[i], i, arr)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+Array.prototype.reduce2 = function (callback, initialValue) {
+  if (this === null) {
+    throw new TypeError('this is null or not defined');
+  }
+  if (typeof callback !== 'function') {
+    throw new TypeError(callback + ' is not a function');
+  }
+
+  const arr = Object(this);
+  const length = arguments.length >= 2 ? 2 : 1;
+  // 多余的参数会被 js 过滤掉, 这么写是为了判断用户传入了 undefined.
+  let acc = length >= 2 ? initialValue : arr[0];
+  for (let i = 2 - length; i < arr.length; i++) {
+    acc = callback(acc, arr[i], i, arr);
+  }
+  return acc;
+};
+
+// 5. 手写原生函数方法.
+
+Function.prototype.call2 = function (context, ...args) {
+  if (this === Function.prototype) {
+    return undefined;
+  }
+
+  // 非严格模式下, 如果没有传入对象会是顶部对象.
+  context = context || window;
+  const fn = Symbol('fn');
+  context[fn] = this;
+  const result = context[fn](...args);
+  delete context[fn];
+  return result;
+};
+
+Function.prototype.bind2 = function (context, ...args1) {
+  if (this === Function.prototype) {
+    throw TypeError('Function.prototype can\'t be params');
+  }
+
+  const _this = this;
+
+  return function F(...args2) {
+    // 用于构造函数.
+    if (this instanceof F) {
+      return new _this(...args1, ...args2);
+    }
+    return _this.apply(context, ...args1, ...args2);
+  };
+};

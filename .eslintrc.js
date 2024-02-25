@@ -49,7 +49,9 @@ module.exports = {
     'no-shadow': 0,
     'react/jsx-props-no-spreading': 0,
     'operator-linebreak': 0,
-    'no-unused-vars': 0
+    'no-unused-vars': 0,
+    'radix': 0,
+    'func-names': 0
     // 'import/no-unresolved': 0,
   }
 }
