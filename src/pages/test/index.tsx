@@ -79,14 +79,14 @@ export default function Test() {
   };
 
   const testFunction = () => {
-    const obj = { item: 10 };
-    const thisObj = { item: 5 };
-    function Change(content: { item?: number }) {
-      console.log(content?.item);
-      console.log(this?.item);
-    }
+    // const obj = { item: 10 };
+    // const thisObj = { item: 5 };
+    // function Change(content: { item?: number }) {
+    //   console.log(content?.item);
+    //   console.log(this?.item);
+    // }
 
-    Change.call2(thisObj, obj);
+    // Change.call2(thisObj, obj);
   };
 
   useEffect(() => {

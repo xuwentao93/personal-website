@@ -1,9 +1,11 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-continue */
+/* eslint-disable no-proto */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-extend-native */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable class-methods-use-this */
-/* eslint-disable no-useless-return */
 /* eslint-disable prefer-rest-params */
 
 // 1. 防抖,节流
@@ -416,3 +418,82 @@ Function.prototype.bind2 = function (context, ...args1) {
     return _this.apply(context, ...args1, ...args2);
   };
 };
+
+// 6. new. new 的逻辑有三: 1.创造一个新对象. 2.链接该对象到另一个对象.3.如果没有返回对象,则返回 this.
+export function objectFactory(constructor, ...args) {
+  if (!(constructor instanceof Function)) {
+    throw TypeError(`${constructor} is not a function!`);
+  }
+
+  const obj = Object.create(constructor);
+
+  const ret = constructor.call(obj, ...args);
+
+  return typeof ret === 'object' ? ret : obj;
+}
+
+// 7. instanceof.
+
+export function mockInstanceof(obj, constructor) {
+  while (obj?.__proto__) {
+    if (obj.__proto__ === constructor?.prototype) return true;
+    obj = obj.__proto__;
+  }
+  return false;
+}
+
+// 8.Object.create.
+export function mockCreate(constructor, value = undefined) {
+  if (typeof constructor !== 'object' && typeof constructor !== 'function' && !constructor) {
+    throw TypeError(`${constructor} is not a object or function!`);
+  }
+
+  function F() {}
+  F.prototype = constructor;
+
+  console.log(value);
+  const obj = new F();
+  if (value) Object.defineProperties(obj, value);
+
+  return obj;
+}
+
+// 9. Object.assign. 对于数组和对象表现形式要区分开来.
+Object.assign2 = function (obj, ...soureces) {
+  if (Array.isArray(obj)) {
+    for (let i = 0; i < soureces.length; i++) {
+      if (!soureces[i] || typeof obj !== 'object') continue;
+      if (Array.isArray(soureces[i])) {
+        soureces[i].forEach((item, key) => {
+          obj[key] = item;
+        });
+      } else {
+        for (let x in soureces[i]) {
+          if (soureces[i].hasOwnProperty(x)) {
+            obj.push(soureces[i][x]);
+          }
+        }
+      }
+    }
+  } else {
+    // 如果是对象.
+    for (let i = 0; i < soureces.length; i++) {
+      if (!soureces[i] || typeof obj !== 'object') continue;
+      if (Array.isArray(soureces[i])) {
+        soureces[i].forEach((item, key) => {
+          obj[key] = item;
+        });
+      } else {
+        for (let x in soureces[i]) {
+          if (soureces[i].hasOwnProperty(x)) {
+            obj[x] = soureces[i][x];
+          }
+        }
+      }
+    }
+  }
+
+  return obj;
+};
+
+// 10. JSON.stringify or parse?
