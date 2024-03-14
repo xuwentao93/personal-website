@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable guard-for-in */
 /* eslint-disable no-continue */
 /* eslint-disable no-proto */
@@ -7,6 +8,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable prefer-rest-params */
+import _ from 'lodash';
 
 // 1. 防抖,节流
 export function debounce(fn, time) {
@@ -90,7 +92,7 @@ export class NewPromise {
 
     const newPromise = new NewPromise((resolve, reject) => {
       if (this.status === FULFILLED) {
-        // A+ 2.2.4
+        // A+ 2.2.4 异步调用.
         setTimeout(() => {
           try {
             const x = onFulfilled(this.value);
@@ -102,7 +104,7 @@ export class NewPromise {
       }
 
       if (this.status === REJECTED) {
-        // A+ 2.2.3
+        // A+ 2.2.3, 不能被调用多次
         setTimeout(() => {
           try {
             const x = onRejected(this.reason);
@@ -143,8 +145,7 @@ export class NewPromise {
 
   // resolve 可以把任何值转化成是 fulfilled 的 promise, 如果原本就是 promise, 则原封不动返回.
   resolve(value) {
-    if (value instanceof NewPromise) return value;
-    return new NewPromise(resolve => resolve(value));
+    return value instanceof NewPromise ? value : new NewPromise(resolve => resolve(value));
   }
 
   // 与 resolve 不同, 如果参数是 promise 对象, 也会被当做值转化成新的 promise 对象.
@@ -275,31 +276,28 @@ const resolvePromise = (promise, x, resolve, reject) => {
 };
 
 // 3. 深拷贝, 能够识别正则和日期.
+// export function deepClone(target, map = new Map()) {
+//   // map 的用意是保证相同引用的对象在 copy 之后, 仍然保持相同引用, 并且这里可以加速 copy.
+//   if (map.get(target)) return map.get(target);
 
-const isObject = target => (typeof target === 'object' || typeof target === 'function') && target !== null;
+//   const constructor = target?.constructor;
+//   if (/^(RegExp|Date)$/i.test(constructor)) {
+//     return new constructor(target);
+//   }
 
-export function deepClone(target, map = new Map()) {
-  // map 的用意是保证相同引用的对象在 copy 之后, 仍然保持相同引用, 并且这里可以加速 copy.
-  if (map.get(target)) return map.get(target);
+//   if (isObject(target)) {
+//     const result = Array.isArray(target) ? [] : {};
+//     for (let key in target) {
+//       if (target.hasOwnProperty(key)) {
+//         result[key] = deepClone(target[key], map);
+//       }
+//     }
+//     map.set(target, result);
+//     return result;
+//   }
 
-  const constructor = target?.constructor;
-  if (/^(RegExp|Date)$/i.test(constructor)) {
-    return new constructor(target);
-  }
-
-  if (isObject(target)) {
-    const result = Array.isArray(target) ? [] : {};
-    for (let key in target) {
-      if (target.hasOwnProperty(key)) {
-        result[key] = deepClone(target[key], map);
-      }
-    }
-    map.set(target, result);
-    return result;
-  }
-
-  return target;
-}
+//   return target;
+// }
 
 // 4. 手写数组原生函数.
 
@@ -451,7 +449,6 @@ export function mockCreate(constructor, value = undefined) {
   function F() {}
   F.prototype = constructor;
 
-  console.log(value);
   const obj = new F();
   if (value) Object.defineProperties(obj, value);
 
@@ -497,3 +494,146 @@ Object.assign2 = function (obj, ...soureces) {
 };
 
 // 10. JSON.stringify or parse?
+
+// 递归扁平化.
+
+function flat(item, ans = []) {
+  for (let i = 0; i < item.length; i++) {
+    if (Array.isArray(item[i])) {
+      flat(item[i], ans);
+    } else {
+      ans.push(item[i]);
+    }
+  }
+  return ans;
+}
+
+function deepClone(value) {
+  const isObject = target => (typeof target === 'object' || typeof target === 'function') && target !== null;
+  const getType = obj => Object.prototype.toString.call(obj).slice(8, -1);
+  const firstSymbol = Symbol('first');
+  // 储存最外层对象和已经出现的对象.
+  const map = new Map();
+
+  function clone(context, first = true) {
+    // 已经重复出现的对象, 快速 copy, 性能上更快, 并且 copy 后的对象也是相同引用的.
+    if (map.get(context)) {
+      return map.get(context);
+    }
+    //  处理 RegExp, Date.
+    const constructor = context?.constructor;
+    const constructorStr = getType(context);
+
+    if (constructorStr === 'RegExp' || constructorStr === 'Date') {
+      return new constructor(context);
+    }
+
+    // 处理 symbol.
+    if (constructorStr === 'Symbol') {
+      return Object(Symbol.prototype.valueOf.call(context));
+    }
+
+    // 处理 Function.
+    if (constructorStr === 'Function') {
+      const cloneFunction = function (...args) {
+        context.apply(this, ...args);
+      };
+      for (const key in context) {
+        if (context.hasOwnProperty(key)) {
+          cloneFunction[key] = deepClone(context[key]);
+        }
+      }
+      return cloneFunction;
+    }
+
+    // 处理 Map.
+    if (constructorStr === 'Map') {
+      const map = new constructor();
+      context.forEach((k, v) => map.set(clone(k), clone(v)));
+      return map;
+    }
+
+    // 处理 Set.
+    if (constructorStr === 'Set') {
+      const set = new constructor();
+      for (const value of context.values()) {
+        set.add(clone(value));
+      }
+      return set;
+    }
+
+    // WeakSet, WeakMap 无法被深拷贝, 所以直接返回对象.
+    if (constructorStr === 'WeakSet' || constructorStr === 'WeakMap' || constructorStr === 'Promise') {
+      return context;
+    }
+
+    if (isObject(context)) {
+      const result = Array.isArray(context) ? [] : {};
+      if (first) {
+        map.set(firstSymbol, result);
+      }
+      if (context === value && !first) {
+        return map.get(firstSymbol);
+      }
+      for (const key in context) {
+        if (context.hasOwnProperty(key)) {
+          result[key] = clone(context[key], false);
+        }
+      }
+      map.set(context, result);
+      return result;
+    }
+
+    return context;
+  }
+
+  return clone(value);
+}
+
+const commonObj = {};
+
+const example = {
+  str: 'str',
+  num: 10,
+  bool: true,
+  symbol: Symbol('symbol'),
+  emptyObj: {},
+  date: new Date(),
+  exp: /1/,
+  map: new Map(),
+  set: new Set([1, 2, 3, 4, 'str']),
+  weakMap: new WeakMap(),
+  weakSet: new WeakSet([{}, commonObj]),
+  promise: new Promise(resolve => resolve(1)),
+  // 测试共同指针的对象.
+  commonObj,
+  fn() {
+    console.log('this is fn');
+    console.log(this);
+  },
+  obj: {
+    a: 1,
+    b: 2,
+    commonObj
+  }
+};
+
+example.obj.self = example;
+example.map.set(1, 1);
+example.map.set('1', '1');
+example.map.set({}, {});
+example.map.set('obj', commonObj);
+example.map.set('obj2', commonObj);
+example.weakMap.set({}, {});
+example.weakMap.set(commonObj, commonObj);
+example.weakMap.set({}, commonObj);
+
+const test = deepClone(example);
+
+const lodashTest = _.cloneDeep(example);
+console.log(lodashTest.promise === example.promise);
+
+// console.log(_.deepClone(example));
+
+console.log('test:', test);
+console.log('map:', example.map);

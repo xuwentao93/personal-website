@@ -1,7 +1,18 @@
+/* eslint-disable guard-for-in */
 import * as React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import {
+  useState,
+  useEffect,
+  useRef,
+  useImperativeHandle,
+  memo,
+  createContext,
+  useContext
+} from 'react';
 import './index.less';
+import layout from '@/components/Hoc';
 import * as utils from '../../interview.js';
+import { Hhh } from '@/type';
 
 // const debounce = utils.debounce(() => {
 //   console.log(1);
@@ -11,33 +22,37 @@ import * as utils from '../../interview.js';
 //   console.log('throttle');
 // }, 500);
 
+console.log(Hhh.calculate());
+
+class A {
+  private readonly x = 10;
+}
+// 入参名不需要和定义的类型匹配.
+const h: (name: string) => string = ff => '1';
+
 const { NewPromise, deepClone } = utils;
 
-export default function Test() {
+const Theme = createContext('');
+
+function Test() {
   const [count, setCount] = useState(0);
   const [cloSureNum, setCloSureNum] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const inner: React.MutableRefObject<any> = useRef();
   const learnCallbackRef: React.MutableRefObject<any> = useRef(null);
 
+  const child = React.createRef();
+
   const getTarget = (e: React.MouseEvent) => {
+    const id = document.getElementById('test');
+    const before = document.getElementById('before');
+    const test = document.createElement('div');
+    test.innerHTML = '123123';
+    (id as HTMLElement).insertBefore(test, before);
+
     console.log('e.target', e.target);
     console.log('e.currentTarget', e.currentTarget);
-  };
-
-  const testDeepClone = () => {
-    const obj = {
-      a: 1
-    };
-
-    const largeObj = {
-      a: obj,
-      b: obj,
-      c: obj
-    };
-    const newObj = deepClone(largeObj);
-    // console.log(newObj);
-    // console.log(newObj.b === newObj.a);
   };
 
   const grow = () => {
@@ -89,14 +104,45 @@ export default function Test() {
     // Change.call2(thisObj, obj);
   };
 
+  const ChildWithLoading = layout(Child);
+
   useEffect(() => {
-    testDeepClone();
+    // testDeepClone();
     testArrayFunction();
     testFunction();
+    // eslint-disable-next-line no-unused-expressions
+    child?.current?.childFunc();
+
+    // Promise.resolve()
+    //   .then(() => {
+    //     console.log(0);
+    //     return Promise.resolve(4);
+    //   })
+    //   .then(res => {
+    //     console.log(res);
+    //   });
+
+    // Promise.resolve()
+    //   .then(() => {
+    //     console.log(1);
+    //   })
+    //   .then(() => {
+    //     console.log(2);
+    //   })
+    //   .then(() => {
+    //     console.log(3);
+    //   })
+    //   .then(() => {
+    //     console.log(5);
+    //   })
+    //   .then(() => {
+    //     console.log(6);
+    //   });
 
     // 学习 requestAnimationFrame.
     const timer = setTimeout(() => {
       requestAnimationFrame(grow);
+      setIsLoading(false);
     }, 1000);
 
     const closureTime = setInterval(() => {
@@ -116,10 +162,14 @@ export default function Test() {
   }, [count]);
 
   return (
-    <div className="test">
+    <div className="test" id="test">
       {/* 学习 target 和 currentTarget 的区别 */}
       <div className="test-inner" ref={inner} onClick={getTarget}>
       </div>
+      <Theme.Provider value="theme">
+        {/* {Layout(() => <Child child={child} />)} */}
+        <ChildWithLoading isLoading={isLoading} child={child} />
+      </Theme.Provider>
 
       {/* 学习 ref 的回调用法 */}
       {[1, 2, 3, 4, 5].map(item => (
@@ -142,7 +192,26 @@ export default function Test() {
       {/* 学习 useLayoutEffect  */}
       <div onClick={() => setCount(0)} className="count">{count}</div>
 
+      {/* 学习 三角形 */}
+      <div className="triangle" />
+
+      <div className="line" id="before"></div>
+
       <div>{cloSureNum}</div>
     </div>
   );
 }
+
+function Child(props: { child: React.Ref<unknown> }) {
+  const { child } = props;
+
+  const childFunc = () => {
+    console.log('this is a child function! you got it from useImpretiveHandle!');
+  };
+
+  useImperativeHandle(child, () => ({ childFunc }));
+
+  return <div>child component</div>;
+}
+
+export default memo(Test);

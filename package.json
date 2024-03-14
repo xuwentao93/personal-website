@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite --config config/vite.config.ts",
+    "testPromise": "promises-aplus-tests src/myPromise.js",
     "build": "vite build --config config/vite.config.ts",
     "preview": "vite preview"
   },
@@ -37,6 +38,7 @@
     "eslint-plugin-react": "^7.17.0",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
+    "promises-aplus-tests": "^2.1.2",
     "typescript": "^4.5.4",
     "vite": "^2.8.0"
   }
