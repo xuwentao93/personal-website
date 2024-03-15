@@ -6,37 +6,17 @@ import {
   useRef,
   useImperativeHandle,
   memo,
-  createContext,
-  useContext
+  createContext
 } from 'react';
 import './index.less';
 import layout from '@/components/Hoc';
-import * as utils from '../../interview.js';
-import { Hhh } from '@/type';
-
-// const debounce = utils.debounce(() => {
-//   console.log(1);
-// }, 500);
-
-// const throttle = utils.throttle(() => {
-//   console.log('throttle');
-// }, 500);
-
-console.log(Hhh.calculate());
-
-class A {
-  private readonly x = 10;
-}
-// 入参名不需要和定义的类型匹配.
-const h: (name: string) => string = ff => '1';
-
-const { NewPromise, deepClone } = utils;
 
 const Theme = createContext('');
 
 function Test() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(5);
   const [cloSureNum, setCloSureNum] = useState(0);
+
   const [isLoading, setIsLoading] = useState(true);
 
   const inner: React.MutableRefObject<any> = useRef();
@@ -110,34 +90,6 @@ function Test() {
     // testDeepClone();
     testArrayFunction();
     testFunction();
-    // eslint-disable-next-line no-unused-expressions
-    child?.current?.childFunc();
-
-    // Promise.resolve()
-    //   .then(() => {
-    //     console.log(0);
-    //     return Promise.resolve(4);
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //   });
-
-    // Promise.resolve()
-    //   .then(() => {
-    //     console.log(1);
-    //   })
-    //   .then(() => {
-    //     console.log(2);
-    //   })
-    //   .then(() => {
-    //     console.log(3);
-    //   })
-    //   .then(() => {
-    //     console.log(5);
-    //   })
-    //   .then(() => {
-    //     console.log(6);
-    //   });
 
     // 学习 requestAnimationFrame.
     const timer = setTimeout(() => {
