@@ -1,8 +1,21 @@
 .personal-left-decoration-component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
+  width: inherit;
+
   .item {
     width: 240px;
     height: 240px;
     cursor: pointer;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 3px #aaa;
+
+    transition: transform .4s;
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 }

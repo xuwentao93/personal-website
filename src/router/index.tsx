@@ -11,15 +11,16 @@ import Write from '@/pages/write';
 import Mahjong from '@/pages/mahjong';
 import Test from '@/pages/test';
 import BoardGame from '@/pages/boardGame';
+import Plan from '@/pages/plan';
 
-// interface RouteType {
-//   path: string,
-//   component: () => Element,
-//   name: string,
-//   exact: boolean
-// }
+interface RouteType {
+  path: string,
+  component: React.FC,
+  name: string,
+  exact: boolean
+}
 
-const routes = [
+const routes: RouteType[] = [
   {
     path: '/',
     component: Cover,
@@ -60,6 +61,12 @@ const routes = [
     path: '/test',
     component: Test,
     name: 'test',
+    exact: true
+  },
+  {
+    path: '/plan',
+    component: Plan,
+    name: 'plan',
     exact: true
   }
 ];

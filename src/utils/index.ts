@@ -1,3 +1,4 @@
+// 时间格式.
 export function dateFormat(time = Date.parse((new Date() as any))) { // !! 这个函数还需要在修改一下.让他可以返回不同的值.
   const date = new Date(time);
   const year = date.getFullYear();
@@ -26,4 +27,9 @@ export function getQueryString(name: string) {
   const result = search.match(reg);
 
   return result != null ? result[2] : '';
+}
+
+// 图片 file 对象转 string 逃避 ts 校验.
+export function toggleImgToString(img: File): string {
+  return URL.createObjectURL(img);
 }

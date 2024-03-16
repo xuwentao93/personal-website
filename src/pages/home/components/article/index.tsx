@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './index.less';
 import { dateFormat } from '@/utils';
+import time from '@/assets/timebg.jpg';
 import { ArticleType } from '@/constant/enum';
 
 export interface Article {
@@ -43,7 +44,19 @@ const typeMap = {
 };
 
 export default function ArticleList(props: ArticleProp) {
-  const { articleList } = props;
+  // const { articleList } = props;
+  const articleList = [
+    {
+      id: 'xxx',
+      title: '我是测试标题',
+      brief: '这真的是一篇好文章, 这真的是一篇好文章, 这真的是一篇好文章, 这真的是一篇好文章, 这真的是一篇好文章',
+      view: 1,
+      type: 0,
+      subtype: '测试用',
+      cover: time,
+      time: 0
+    }
+  ];
 
   return (
     <div className="personal-article-list-component-page">

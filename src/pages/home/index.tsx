@@ -6,6 +6,7 @@ import { getArticleList } from '@/api';
 import { titleListMap, TitieListType } from '@/constant';
 import Loading from '@/components/Loading';
 import LeftDecoration from './components/leftDecoration';
+import RightDecoration from './components/rightDecoration';
 import ArticleList, { Article } from './components/article';
 import './index.less';
 
@@ -85,7 +86,9 @@ export default function Home() {
         </div>
       </div>
       <div className="main" ref={main} onScroll={methods.getMoreArticleList}>
-        <LeftDecoration />
+        <div className="side">
+          <LeftDecoration />
+        </div>
         <div className="center">
           <ArticleList articleList={articleList} />
           {loading && (
@@ -97,6 +100,9 @@ export default function Home() {
           {reachBottom && (
             <div className="bottom-text">已经到底啦!</div>
           )}
+        </div>
+        <div className="side">
+          <RightDecoration />
         </div>
       </div>
     </div>
