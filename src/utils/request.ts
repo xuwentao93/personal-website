@@ -1,23 +1,38 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
-const request = axios.create({
-  timeout: 10000,
-  // baseURL: 'http://www.xuwentao.com',
-  baseURL: 'https://www.xuwentao.com:8080',
+const oldRequest = axios.create({
+  timeout: 5000,
+  // 这块不要用域名, 遇到了域名过期导致代码失效的问题.
+  baseURL: 'https://1.12.37.251:8080',
   headers: {
     'Content-type': 'application/json',
     Authorization: localStorage.getItem('code')
   }
 });
 
-request.interceptors.request.use(config => {
-  config.data = JSON.stringify(config.data);
-  return config;
-},
-err => {
-  console.log(err);
+const request: AxiosInstance = axios.create({
+  timeout: 5000,
+  // 这块不要用域名, 遇到了域名过期导致代码失效的问题.
+  baseURL: 'https://1.12.37.251:9090',
+  headers: {
+    'Content-type': 'application/json',
+    Authorization: localStorage.getItem('code')
+  }
 });
 
-request.interceptors.response.use(config => config.data, err => console.error(err));
+function setRequest(request: AxiosInstance) {
+  request.interceptors.request.use(config => {
+    config.data = JSON.stringify(config.data);
+    return config;
+  },
+  err => {
+    console.log(err);
+  });
 
-export default request;
+  request.interceptors.response.use(config => config.data, err => console.error(err));
+}
+
+setRequest(request);
+setRequest(oldRequest);
+
+export { oldRequest, request };
