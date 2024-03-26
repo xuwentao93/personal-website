@@ -14,8 +14,8 @@ import layout from '@/components/Hoc';
 const Theme = createContext('');
 
 function Test() {
+  console.log('render');
   const [count, setCount] = useState(5);
-  const [cloSureNum, setCloSureNum] = useState(0);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -88,30 +88,13 @@ function Test() {
 
   useEffect(() => {
     // testDeepClone();
-    testArrayFunction();
-    testFunction();
 
-    // 学习 requestAnimationFrame.
-    const timer = setTimeout(() => {
-      requestAnimationFrame(grow);
+    setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-
-    const closureTime = setInterval(() => {
-      setCloSureNum(num => num + 1);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(closureTime);
-    };
+    testArrayFunction();
+    testFunction();
   }, []);
-
-  useEffect(() => {
-    if (count === 0) {
-      setCount(Math.random() * 9999);
-    }
-  }, [count]);
 
   return (
     <div className="test" id="test">
@@ -142,14 +125,13 @@ function Test() {
       ))}
 
       {/* 学习 useLayoutEffect  */}
-      <div onClick={() => setCount(0)} className="count">{count}</div>
+      <div onClick={() => setCount(Math.random())} className="count">{count}</div>
 
       {/* 学习 三角形 */}
       <div className="triangle" />
 
       <div className="line" id="before"></div>
 
-      <div>{cloSureNum}</div>
     </div>
   );
 }
@@ -157,13 +139,16 @@ function Test() {
 function Child(props: { child: React.Ref<unknown> }) {
   const { child } = props;
 
+  const [A, setA] = useState(1);
+  console.log('render child');
+
   const childFunc = () => {
     console.log('this is a child function! you got it from useImpretiveHandle!');
   };
 
   useImperativeHandle(child, () => ({ childFunc }));
 
-  return <div>child component</div>;
+  return <div onClick={() => setA(2)}>child component</div>;
 }
 
 export default memo(Test);

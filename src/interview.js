@@ -525,7 +525,9 @@ function deepClone(value) {
     const constructorStr = getType(context);
 
     if (constructorStr === 'RegExp' || constructorStr === 'Date') {
-      return new constructor(context);
+      const result = new constructor(context);
+      map.set(context, result);
+      return result;
     }
 
     // 处理 symbol.
@@ -543,6 +545,7 @@ function deepClone(value) {
           cloneFunction[key] = deepClone(context[key]);
         }
       }
+      map.set(context, cloneFunction);
       return cloneFunction;
     }
 
@@ -550,6 +553,7 @@ function deepClone(value) {
     if (constructorStr === 'Map') {
       const map = new constructor();
       context.forEach((k, v) => map.set(clone(k), clone(v)));
+      map.set(context, map);
       return map;
     }
 
@@ -559,6 +563,7 @@ function deepClone(value) {
       for (const value of context.values()) {
         set.add(clone(value));
       }
+      map.set(context, set);
       return set;
     }
 
@@ -567,6 +572,7 @@ function deepClone(value) {
       return context;
     }
 
+    // 处理普通 object 和 数组.
     if (isObject(context)) {
       const result = Array.isArray(context) ? [] : {};
       if (first) {
@@ -618,22 +624,22 @@ const example = {
   }
 };
 
-example.obj.self = example;
-example.map.set(1, 1);
-example.map.set('1', '1');
-example.map.set({}, {});
-example.map.set('obj', commonObj);
-example.map.set('obj2', commonObj);
-example.weakMap.set({}, {});
-example.weakMap.set(commonObj, commonObj);
-example.weakMap.set({}, commonObj);
+// example.obj.self = example;
+// example.map.set(1, 1);
+// example.map.set('1', '1');
+// example.map.set({}, {});
+// example.map.set('obj', commonObj);
+// example.map.set('obj2', commonObj);
+// example.weakMap.set({}, {});
+// example.weakMap.set(commonObj, commonObj);
+// example.weakMap.set({}, commonObj);
 
-const test = deepClone(example);
+// const test = deepClone(example);
 
 const lodashTest = _.cloneDeep(example);
 console.log(lodashTest.promise === example.promise);
 
 // console.log(_.deepClone(example));
 
-console.log('test:', test);
+// console.log('test:', test);
 console.log('map:', example.map);
