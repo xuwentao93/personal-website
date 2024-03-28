@@ -6,7 +6,7 @@ import {
   useEffect,
   useReducer
 } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import Markdown from 'react-markdown';
@@ -33,7 +33,7 @@ const mdParser = new MarkdownIt();
 let timer: number;
 
 export default function Write() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const id = getQueryString('id');
 
   const [modal, setModal] = useState(false);
@@ -156,7 +156,7 @@ export default function Write() {
           if (res.success) {
             setModal(false);
             message.success('修改成功!');
-            history.push('./home');
+            navigate('/home');
           } else {
             message.error(res.message || '上传失败!');
           }
@@ -167,7 +167,7 @@ export default function Write() {
         if (res.success) {
           setModal(false);
           message.success('上传成功!');
-          history.push('./home?type=current');
+          navigate('/home?type=current');
         } else {
           message.error(res.message || '上传失败!');
         }

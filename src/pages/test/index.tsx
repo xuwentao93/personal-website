@@ -9,7 +9,7 @@ import {
   createContext
 } from 'react';
 import './index.less';
-import layout from '@/components/Hoc';
+import layout from '../../components/Hoc';
 
 const Theme = createContext('');
 

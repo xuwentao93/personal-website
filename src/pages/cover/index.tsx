@@ -1,30 +1,28 @@
 import * as React from 'react';
 import { useState, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './index.less';
 import Navigation from '@/components/Navigation';
 import Signature from '@/components/Signature';
 
 export default function Cover() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [move, setMove] = useState(0);
 
   const body: React.MutableRefObject<any> = useRef();
 
-  const methods = {
-    scrollBody() {
-      const container = body.current;
-      setMove(container.scrollTop / 4);
-    }
+  const scrollBody = () => {
+    const container = body.current;
+    setMove(container.scrollTop / 4);
   };
 
   return (
-    <div className="personal-cover-page" onScroll={methods.scrollBody} ref={body}>
+    <div className="personal-cover-page" onScroll={scrollBody} ref={body}>
       <div className="cover">
         <Navigation />
         <div className="center-text">
-          <div className="enter-home" onClick={() => history.push('./home')}>
+          <div className="enter-home" onClick={() => navigate('/home')}>
             进入首页
           </div>
           <div>Life is colofor, enjoy it every day.</div>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import mahjong from '@/assets/mahjong.jpg';
 import plan from '@/assets/timebg.jpg';
 import boardgame from '@/assets/boardgamebg.jpg';
@@ -27,12 +27,12 @@ const renderToolList: RenderToolListType[] = [
 ];
 
 export default function LeftDecoration() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <div className="personal-left-decoration-component">
       {renderToolList.map(item => (
-        <img src={item.img as any} className="item" key={item.url} onClick={() => history.push(`./${item.url}`)} />
+        <img src={item.img as any} className="item" key={item.url} onClick={() => navigate(`/${item.url}`)} />
       ))}
     </div>
   );

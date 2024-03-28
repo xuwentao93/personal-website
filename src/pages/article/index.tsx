@@ -29,9 +29,10 @@ interface ArticleMsgType {
 
 export default function Article() {
   const { id } = (useParams() as any);
-  const code = localStorage.getItem('code');
 
   const [article, setArticle] = useState<ArticleMsgType>(({} as ArticleMsgType));
+
+  const [code, setCode] = useState<string | null>();
 
   const methods = {
     getArticle() {
@@ -48,7 +49,6 @@ export default function Article() {
       window.open(`/write?id=${id}`);
     },
     delete() {
-      const code = localStorage.getItem('code');
       deleteArticle({
         code,
         id
@@ -65,6 +65,9 @@ export default function Article() {
   useEffect(() => {
     methods.getArticle();
     methods.viewArticle();
+
+    // 因为服务端渲染, 浏览器 API 必须延后执行.    
+    setCode(localStorage.getItem('code'));
   }, []);
 
   return (
