@@ -5,50 +5,23 @@ import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import rehypeRaw from 'rehype-raw';
 import Navigation from '@/components/NewNavigation';
-import Signature from '@/components/Signature';
 import { dateFormat } from '@/utils';
-import { getArticle, viewArticle, deleteArticle } from '@/api';
-import { ArticleType } from '@/constant/enum';
+import { viewArticle, deleteArticle } from '@/api';
 import './index.less';
 import message from '@/components/Message';
-
-interface ArticleMsgType {
-  // 文章内容, markdown 字符串和
-  text: string,
-  // 写作时间
-  time: number,
-  // 文章标题
-  title: string,
-  // 文章类型
-  type: ArticleType.life | ArticleType.frontend | ArticleType.algorithm | ArticleType.network | ArticleType.other
-  // 文章子类型
-  subtype?: string,
-  // 浏览次数
-  view: number
-}
+import { useArticle } from './articleHook';
 
 export default function Article() {
   const { id } = (useParams() as any);
 
-  const [article, setArticle] = useState<ArticleMsgType>(({} as ArticleMsgType));
-
+  const { article, loading } = useArticle(id);
   const [code, setCode] = useState<string | null>();
 
-  const methods = {
-    getArticle() {
-      getArticle({ id }).then((res: any) => {
-        if (res.success) {
-          setArticle(res.data);
-        }
-      });
-    },
-    viewArticle() {
-      viewArticle({ id });
-    },
-    modify() {
+    const modifyArticleHandle = () => {
       window.open(`/write?id=${id}`);
-    },
-    delete() {
+    };
+
+    const deleteArticleHandle = () => {
       deleteArticle({
         code,
         id
@@ -59,16 +32,18 @@ export default function Article() {
           message.error(res.message || '删除失败');
         }
       });
-    }
-  };
+    };
 
   useEffect(() => {
-    methods.getArticle();
-    methods.viewArticle();
+    viewArticle({ id });
 
     // 因为服务端渲染, 浏览器 API 必须延后执行.    
     setCode(localStorage.getItem('code'));
   }, []);
+
+  if (loading) {
+    return 'loading';
+  }
 
   return (
     <div className="personal-article-page">
@@ -78,8 +53,8 @@ export default function Article() {
           <div className="title">{article.title}</div>
           {code && (
             <>
-              <div className="button button-primary" onClick={methods.modify}>修改</div>
-              <div className="button button-error" onClick={methods.delete}>删除</div>
+              <div className="button button-primary" onClick={modifyArticleHandle}>修改</div>
+              <div className="button button-error" onClick={deleteArticleHandle}>删除</div>
             </>
           )}
         </h1>
@@ -131,3 +106,5 @@ export default function Article() {
     </div>
   );
 }
+
+Article.loadData = useArticle;

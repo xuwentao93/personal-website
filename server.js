@@ -1,5 +1,7 @@
 import fs from "fs";
 import express from "express";
+import { matchRoutes } from 'react-router-config';
+
 const app = express();
 // 通过 vite 创建 server 服务
 import { createServer } from "vite";

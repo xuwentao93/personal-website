@@ -51,7 +51,8 @@ module.exports = {
     'operator-linebreak': 0,
     'no-unused-vars': 0,
     'radix': 0,
-    'func-names': 0
+    'func-names': 0,
+    'jsx-a11y/alt-text': 0
     // 'import/no-unresolved': 0,
   }
 }

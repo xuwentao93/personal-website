@@ -3,6 +3,7 @@ import path from 'path';
 import react from '@vitejs/plugin-react';
 import buildConifg from './vite.build';
 import devConfig from './vite.dev';
+// import { ssr }from 'vite-plugin-ssr/plugin';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command }) => {
