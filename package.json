@@ -51,6 +51,7 @@
     "less-loader": "^10.2.0",
     "promises-aplus-tests": "^2.1.2",
     "typescript": "^4.5.4",
+    "vike": "^0.4.168",
     "vite": "^4.1.0"
   }
 }

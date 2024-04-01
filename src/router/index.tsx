@@ -11,6 +11,7 @@ import Mahjong from '@/pages/mahjong';
 import Test from '../pages/test';
 import BoardGame from '@/pages/boardGame';
 import Plan from '@/pages/plan';
+import VirtualList from '@/pages/virtulList';
 import UploadFile from '@/pages/uploadFile';
 
 interface RouteType {
@@ -67,6 +68,11 @@ export const routes: RouteType[] = [
     path: '/plan',
     Component: Plan,
     name: 'plan'
+  },
+  {
+    path: '/virtualList',
+    Component: VirtualList,
+    name: 'virtualList'
   }
 ];
 
