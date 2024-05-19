@@ -8,16 +8,20 @@ import {
   memo,
   createContext
 } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './index.less';
+import { testApi } from '@/api';
 import layout from '../../components/Hoc';
 
 const Theme = createContext('');
 
 function Test() {
-  console.log('render');
+  const navigate = useNavigate();
+
   const [count, setCount] = useState(5);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [list, setList] = useState([]);
 
   const inner: React.MutableRefObject<any> = useRef();
   const learnCallbackRef: React.MutableRefObject<any> = useRef(null);
@@ -31,8 +35,7 @@ function Test() {
     test.innerHTML = '123123';
     (id as HTMLElement).insertBefore(test, before);
 
-    console.log('e.target', e.target);
-    console.log('e.currentTarget', e.currentTarget);
+    navigate('/home');
   };
 
   const grow = () => {
@@ -52,59 +55,37 @@ function Test() {
     return learnCallbackRef.current;
   };
 
-  const testArrayFunction = () => {
-    const arr = [1, 2, 3, 4, 5, 10];
-
-    // arr.forEach2((item, index, array) => {
-    //   console.log(item);
-    //   console.log(index);
-    //   console.log(array);
-    // });
-
-    // const getMap = arr.map2((item, index, array) => {
-    //   console.log(item);
-    //   console.log(index);
-    //   console.log(array);
-    //   return item * 2;
-    // });
-
-    // const getFilter = arr.filter2((item: number) => item < 5);
-
-    // console.log(arr.reduce2((acc, item) => acc + item, 5));
-  };
-
-  const testFunction = () => {
-    // const obj = { item: 10 };
-    // const thisObj = { item: 5 };
-    // function Change(content: { item?: number }) {
-    //   console.log(content?.item);
-    //   console.log(this?.item);
-    // }
-
-    // Change.call2(thisObj, obj);
+  const getApi = () => {
+    testApi().then((res: any) => {
+      setList(res);
+    });
   };
 
   const ChildWithLoading = layout(Child);
 
   useEffect(() => {
-    // testDeepClone();
-
+// 获取页面上所有的 img 标签元素
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-    testArrayFunction();
-    testFunction();
+    getApi();
   }, []);
 
   return (
     <div className="test" id="test">
+      <img
+        className="img"
+        onClick={() => import('markdown-it')}
+        src="https://plus.unsplash.com/premium_photo-1681406994530-3de7406c21a5?q=80&amp;w=387&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      />
+      <img
+        className="img"
+        src="https://pic.616pic.com/bg_w1180/00/14/10/veeG0mYYhh.jpg"
+      />
       {/* 学习 target 和 currentTarget 的区别 */}
       <div className="test-inner" ref={inner} onClick={getTarget}>
       </div>
-      <Theme.Provider value="theme">
-        {/* {Layout(() => <Child child={child} />)} */}
-        <ChildWithLoading isLoading={isLoading} child={child} />
-      </Theme.Provider>
+      <Child list={list} child={child} />
 
       {/* 学习 ref 的回调用法 */}
       {[1, 2, 3, 4, 5].map(item => (
@@ -136,11 +117,10 @@ function Test() {
   );
 }
 
-function Child(props: { child: React.Ref<unknown> }) {
-  const { child } = props;
+function Child(props: { child: React.Ref<unknown>, list: any[] }) {
+  const { child, list } = props;
 
   const [A, setA] = useState(1);
-  console.log('render child');
 
   const childFunc = () => {
     console.log('this is a child function! you got it from useImpretiveHandle!');
@@ -148,7 +128,16 @@ function Child(props: { child: React.Ref<unknown> }) {
 
   useImperativeHandle(child, () => ({ childFunc }));
 
-  return <div onClick={() => setA(2)}>child component</div>;
+  return (
+    <div onClick={() => setA(2)}>
+      <div>child component</div>
+      <div>
+        {list.map(item => (
+          <div key={item.id} id={item.id}>{item.id}</div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default memo(Test);

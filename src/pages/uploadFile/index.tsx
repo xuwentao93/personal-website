@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useState, useEffect, useRef, useTransition } from 'react';
-import { Button, Progress, Table, message, Upload } from 'antd';
+import { Button, Progress, Table, message } from 'antd';
 import Scheduler from '@/utils/schedule';
 import SparkMD5 from 'spark-md5';
 import './index.less';
 
-// 切片大小为 1 MB.
-const SIZE = 1 * 1024 * 1024;
+// 切片大小为 5 MB.
+const SIZE = 5 * 1024 * 1024;
 
 interface TypeChunk {
   chunk: Blob,
@@ -99,7 +99,7 @@ export default function UploadFile() {
     };
   }
 
-  // 使用 md5 加密 + 
+  // 使用 md5 加密.
   const calculateHash = (prevFileChunkList: TypeChunk[]) => {
     return new Promise(resolve => {
       const spark = new SparkMD5.ArrayBuffer();
@@ -139,6 +139,7 @@ export default function UploadFile() {
     setFile(file);
   };
 
+  // 生成文件切片, 生成文件 hash.
   const createFileChunk = async () => {
     if (!file) {
       return;
@@ -229,7 +230,7 @@ export default function UploadFile() {
     <div className="uploadFile">
       <div className="operate">
         <div className="file">
-          <Button type="primary" onClick={() => fileDOM?.current?.click()}>
+          <Button type="primary" onClick={() => fileDOM.current?.click()}>
             选择要上传的文件
           </Button>
         </div>

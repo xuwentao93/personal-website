@@ -61,12 +61,24 @@ export default function VirtualList() {
       }
       l.push({
         value,
-        key: i
+        key: i,
+        name: '名字名字名字',
+        url: 'https://www.google.com?xxx=aaa%&xxx=bbb&cccc=ddd',
+        urls: 'https://www.google.com?xxx=aaa%&xxx=bbb&cccc=ddd',
+        urlf: 'https://www.google.com?xxx=aaa%&xxx=bbb&cccc=ddd',
+        urlg: 'https://www.google.com?xxx=aaa%&xxx=bbb&cccc=ddd',
+        urlt: 'https://www.google.com?xxx=aaa%&xxx=bbb&cccc=ddd',
+        ursls: 'https://www.google.com?xxx=aaa%&xxx=bbb&cccc=ddd',
+        urlfft: 'https://www.google.com?xxx=aaa%&xxx=bbb&cccc=ddd',
+        array: [123, 123, {
+          a: 123123
+        }]
       });
     }
     return l;
   }, []);
 
+  // 数值化元素属性列表.
   const initialPosition = () => {
     const curPosition = list.map((item, index) => ({
       index,
@@ -130,7 +142,8 @@ export default function VirtualList() {
       // setStartOffset(scrollTop - scrollTop % itemHeight);
 
       // 不固定高度解决方案.
-      let num = position.find(item => item.bottom > scrollTop)?.index || 0; // !! 注意!因为缓存数据是有顺序的, 这段代码可以用二分法!
+      // !! 注意!因为缓存数据是有顺序的, 这段代码可以用二分法!
+      let num = position.find(item => item.bottom > scrollTop)?.index || 0; 
 
       if (num !== start) {
         setStart(num);
@@ -183,6 +196,7 @@ export default function VirtualList() {
         className="list-container"
         style={{ transform: `translate3d(0, ${startOffset}px, 0)` }}
       >
+        {/* {list.slice(start, end).map((item, index) => ( */}
         {list.slice(start - above, Math.min(end + 1 + after, list.length)).map((item, index) => (
           <div className="item" key={item.key} ref={(ref) => itemRef.current[index] = ref as any}>
             {item.value}

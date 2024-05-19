@@ -8,7 +8,6 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable prefer-rest-params */
-import _ from 'lodash';
 
 // 1. 防抖,节流
 export function debounce(fn, time) {
@@ -635,9 +634,6 @@ const example = {
 // example.weakMap.set({}, commonObj);
 
 // const test = deepClone(example);
-
-const lodashTest = _.cloneDeep(example);
-console.log(lodashTest.promise === example.promise);
 
 // console.log(_.deepClone(example));
 

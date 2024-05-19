@@ -70,3 +70,6 @@ export interface LoginType {
 
 // 登录.
 export const login = (data: LoginType) => request.post('/auth/login', data);
+
+// 测试用的, 可以跨域的接口.
+export const testApi = () => request.get('http://jsonplaceholder.typicode.com/posts');

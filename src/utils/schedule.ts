@@ -19,8 +19,8 @@ export default class Scheduler {
     this.queue = []; // 任务队列
     this.limit = limit; // 上限的任务.
     this.result = []; // 请求返回的内容.
-    this.taskLength = 0; //
-    this.pauseLimit = limit;
+    this.taskLength = 0; // 当并发控制器入参是数组的时候, 用来判断什么时候 resolve.
+    this.pauseLimit = limit; // 重传回复需要的数值, 因为 this.limit 被设置成了 0.
     this.errorTime = errorTime; // 重传次数.
     this.errorList = []; // 错误列表.
   }
@@ -56,7 +56,7 @@ export default class Scheduler {
         };
       })
       .catch((err: any) => {
-        if (!this.errorList[index] || this.errorList[index] < 3) {
+        if (!this.errorList[index] || this.errorList[index] < this.errorTime) {
           if (!this.errorList[index]) {
             this.errorList[index] = 1;
           } else {

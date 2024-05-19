@@ -5,8 +5,8 @@ import {
 } from 'react-router-dom';
 import Home from '@/pages/home';
 import Cover from '@/pages/cover';
-import Article from '@/pages/article';
-import Write from '@/pages/write';
+// import Article from '@/pages/article';
+// import Write from '@/pages/write';
 import Mahjong from '@/pages/mahjong';
 import Test from '../pages/test';
 import BoardGame from '@/pages/boardGame';
@@ -25,7 +25,7 @@ interface RouteType {
 export const routes: RouteType[] = [
   {
     path: '/',
-    Component: Cover,
+    Component: React.lazy(() => import('@/pages/cover')),
     name: 'cover',
   },
   {
@@ -38,17 +38,17 @@ export const routes: RouteType[] = [
     Component: UploadFile,
     name: 'uploadFile',
   },
-  {
-    path: '/article/:id',
-    Component: Article,
-    name: 'article',
-    loadData: Article.loadData
-  },
-  {
-    path: '/write',
-    Component: Write,
-    name: 'write',
-  },
+  // {
+  //   path: '/article/:id',
+  //   Component: Article,
+  //   name: 'article',
+  //   loadData: Article.loadData
+  // },
+  // {
+  //   path: '/write',
+  //   Component: Write,
+  //   name: 'write',
+  // },
   {
     path: '/mahjong',
     Component: Mahjong,
