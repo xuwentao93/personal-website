@@ -12,7 +12,7 @@
 // 1. 防抖,节流
 export function debounce(fn, time) {
   let timer;
-
+  console.log('test');
   return function () {
     if (timer) {
       clearTimeout(timer);
