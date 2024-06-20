@@ -1,15 +1,15 @@
 import * as React from 'react';
 import {
   Routes,
-  Route,
+  Route
 } from 'react-router-dom';
 import Home from '@/pages/home';
 import Cover from '@/pages/cover';
 // import Article from '@/pages/article';
 // import Write from '@/pages/write';
-import Mahjong from '@/pages/mahjong';
-import Test from '../pages/test';
+import Test from '@/pages/test';
 import BoardGame from '@/pages/boardGame';
+import MemoRandum from '@/pages/memorandum';
 import Plan from '@/pages/plan';
 import VirtualList from '@/pages/virtulList';
 import UploadFile from '@/pages/uploadFile';
@@ -26,17 +26,17 @@ export const routes: RouteType[] = [
   {
     path: '/',
     Component: React.lazy(() => import('@/pages/cover')),
-    name: 'cover',
+    name: 'cover'
   },
   {
     path: '/home',
     Component: Home,
-    name: 'home',
+    name: 'home'
   },
   {
     path: '/uploadFile',
     Component: UploadFile,
-    name: 'uploadFile',
+    name: 'uploadFile'
   },
   // {
   //   path: '/article/:id',
@@ -50,14 +50,14 @@ export const routes: RouteType[] = [
   //   name: 'write',
   // },
   {
-    path: '/mahjong',
-    Component: Mahjong,
-    name: 'mahjong',
+    path: '/memoRandum',
+    Component: MemoRandum,
+    name: 'MemoRandum'
   },
   {
     path: '/boardGame',
     Component: BoardGame,
-    name: 'boardGame',
+    name: 'boardGame'
   },
   {
     path: '/test',
