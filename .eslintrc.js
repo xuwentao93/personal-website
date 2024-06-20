@@ -1,11 +1,19 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  extends: 'airbnb',
   env: {
     browser: true,
     node: true,
     es6: true
   },
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  plugins: [
+    "react",
+    "@typescript-eslint"
+  ],
   settings: {
     'import/resolver': {
       node: {
@@ -36,6 +44,7 @@ module.exports = {
     'no-use-before-define': 0,
     'consistent-return': 0,
     'global-require': 0,
+    "react/react-in-jsx-scope": 0,
     'arrow-parens': [2, 'as-needed'],
     'import/prefer-default-export': 0,
     'react/self-closing-comp': 0,
