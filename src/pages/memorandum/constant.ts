@@ -36,6 +36,17 @@ export const priorityList = [
   }
 ];
 
+export const typeList = [
+  {
+    value: MemorandumTabType.current,
+    label: '备忘录'
+  },
+  {
+    value: MemorandumTabType.inspiration,
+    label: '灵感'
+  }
+]
+
 export const tabList = [
   {
     key: MemorandumTabType.current,
@@ -50,3 +61,14 @@ export const tabList = [
     label: '灵感'
   }
 ];
+
+export enum AddTimeType {
+  everyDay = 'everyDay',
+  timing = 'timing'
+}
+
+export const timeList: number[] = [];
+
+for (let i = 1; i <= 24; i++) {
+  timeList.push(i);
+}

@@ -81,3 +81,11 @@ hr {
 .flex1 {
   flex: 1;
 }
+
+.width-100 {
+  width: 100px;
+}
+
+.width-300 {
+  width: 300px;
+}

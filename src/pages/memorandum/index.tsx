@@ -1,32 +1,69 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Tabs, Table, Button, Flex, Tag, Input, Select, DatePicker, Modal } from 'antd';
+import {
+  Tabs,
+  Table,
+  Button,
+  Flex,
+  Tag,
+  Input,
+  Select,
+  DatePicker,
+  Modal,
+  TimePicker
+} from 'antd';
 import { getMemorandumList } from '@/api/memorandum';
-import { tabList, MemorandumTabType, PriorityLevel, priorityList } from './constant';
-import { mockCurrentMemoRandumData } from './mock';
+import { 
+  tabList,
+  MemorandumTabType,
+  PriorityLevel,
+  priorityList,
+  typeList,
+  AddTimeType,
+  timeList
+} from './constant';
+import {
+  mockCurrentMemoRandumData,
+  mockHistoryMemoRandumData,
+  mockInspirationData
+} from './mock';
 import './index.less';
+import dayjs from 'dayjs';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 export default function Memorandum() {
   const [tabKey, setTabKey] = useState(MemorandumTabType.current);
+
   const [search, setSearch] = useState('');
   const [date, setDate] = useState<[string, string]>(['', '']);
   const [priority, setPriority] = useState();
   const [page, setPage] = useState(1);
+
+  const [currentMemorandumData, setCurrentMemorandumData] = useState(mockCurrentMemoRandumData);
+  const [historyMemorandumData, setHistoryMemorandumData] = useState(mockHistoryMemoRandumData);
+  const [inspirationData, setInspirationData] = useState(mockInspirationData);
+
   const [showMemorandumModal, setShowMemorandumModal] = useState(false);
+  const [type, setType] = useState(MemorandumTabType.current);
+  const [task, setTask] = useState('');
+  const [timeType, setTimeType] = useState('everyDay');
+  const [everyDayremainTime, setEveryDayRemainTime] = useState<number>();
+  const [timingremainTime, setTimingRemainTime] = useState<number>(6);
+  const [addPriority, setAddPriority] = useState<PriorityLevel>(PriorityLevel.middle);
 
   useEffect(() => {
-    getMemorandumList({
-      tab: tabKey,
-      search,
-      date,
-      page,
-      priority
-    }).then(res => {
-      console.log(res);
-    });
+    // getMemorandumList({
+    //   tab: tabKey,
+    //   search,
+    //   date,
+    //   page,
+    //   priority
+    // }).then(res => {
+    //   console.log(res);
+    //   // setCurrentMemorandumData(res?.data || []);
+    // });
 
   }, [search, date, priority]);
 
@@ -162,13 +199,13 @@ export default function Memorandum() {
         />
         <div>
           {tabKey === MemorandumTabType.current && (
-            <Table columns={currentColumns} dataSource={mockCurrentMemoRandumData} />
+            <Table columns={currentColumns} dataSource={currentMemorandumData} />
           )}
           {tabKey === MemorandumTabType.history && (
-            <Table columns={histroyColumns} />
+            <Table columns={histroyColumns} dataSource={historyMemorandumData} />
           )}
           {tabKey === MemorandumTabType.inspiration && (
-            <Table columns={inspirationColumns} />
+            <Table columns={inspirationColumns} dataSource={inspirationData} />
           )}
         </div>
       </div>
@@ -181,8 +218,76 @@ export default function Memorandum() {
         open={showMemorandumModal}
         onOk={addMemorandum}
         onCancel={() => setShowMemorandumModal(false)}
+        title="添加备忘录"
       >
-        123
+        <div className="personal-memorandum-modal-flex-page">
+          <div className="title">类型</div>
+          <Select
+            placeholder="请选择类型"
+            className="width-100"
+            value={type}
+            onChange={value => setType(value)}
+          >
+            {typeList.map(item => (
+              <Option key={item.value} value={item.value}>{item.label}</Option>
+            ))}
+          </Select>
+        </div>
+
+        <div className="personal-memorandum-modal-flex-page">
+          <div className="title">事情/想法</div>
+          <div className="value">
+            <Input value={task} onChange={e => setTask(e.target.value)} />
+          </div>
+        </div>
+
+        <div className="personal-memorandum-modal-flex-page">
+          <div className="title">提醒时间</div>
+          <div className="value">
+            <Select
+              placeholder="请选择类型"
+              className="width-100"
+              onChange={value => setTimeType(value)}
+              value={timeType}
+            >
+              <Option value={AddTimeType.everyDay}>每天</Option>
+              <Option value={AddTimeType.timing}>定时</Option>
+            </Select>
+          </div>
+        </div>
+        <div className="personal-memorandum-modal-flex-page">
+          <div className="title">时间</div>
+          <div className="value">
+            {timeType === AddTimeType.everyDay && (
+              <TimePicker
+                value={dayjs(everyDayremainTime)}
+                onChange={e => setEveryDayRemainTime(e.valueOf())}
+                format="HH:mm"
+              />
+            )}
+            {timeType === AddTimeType.timing && (
+              <Select value={timingremainTime} onChange={value => setTimingRemainTime(value)}>
+                {timeList.map(item => (
+                  <Option key={item} value={item}>{item}</Option>
+                ))}
+              </Select>
+            )}
+          </div>
+        </div>
+        <div className="personal-memorandum-modal-flex-page">
+          <div className="title">优先级</div>
+          <Select
+            placeholder="请选择类型"
+            className="width-100"
+            onChange={value => setAddPriority(value)}
+            value={addPriority}
+          >
+            {priorityList.map(item => (
+              <Option key={item.value} value={item.value}>{item.label}</Option>
+            ))}
+          </Select>
+        </div>
+
       </Modal>
     </div>
   );
