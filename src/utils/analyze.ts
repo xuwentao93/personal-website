@@ -95,7 +95,7 @@ export function analyzeDOM(dom: Node) {
       fatherNode = fatherNode.parentNode;
       baseScore += 0.5;
     }
-    console.log(mutations);
+    // console.log(mutations);
     const score = CScor(mutations[0].target as Element, 0, baseScore);
     scoureWithTime.push({
       score,
@@ -118,6 +118,6 @@ export function analyzeDOM(dom: Node) {
   observer.observe(dom, config);
 
   window.onload = () => {
-    console.log('window.onload', performance.now());
+    // console.log('window.onload', performance.now());
   };
 }

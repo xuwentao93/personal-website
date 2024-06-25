@@ -10,10 +10,11 @@ import {
   Select,
   DatePicker,
   Modal,
-  TimePicker
+  TimePicker,
+  message
 } from 'antd';
-import { getMemorandumList } from '@/api/memorandum';
-import { 
+import { getMemorandumList, addMemorandum, fetchFinishTask, fetchDeleteTask } from '@/api/memorandum';
+import {
   tabList,
   MemorandumTabType,
   PriorityLevel,
@@ -23,7 +24,6 @@ import {
   timeList
 } from './constant';
 import {
-  mockCurrentMemoRandumData,
   mockHistoryMemoRandumData,
   mockInspirationData
 } from './mock';
@@ -33,6 +33,7 @@ import dayjs from 'dayjs';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
+const now = new Date().valueOf();
 export default function Memorandum() {
   const [tabKey, setTabKey] = useState(MemorandumTabType.current);
 
@@ -40,32 +41,23 @@ export default function Memorandum() {
   const [date, setDate] = useState<[string, string]>(['', '']);
   const [priority, setPriority] = useState();
   const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0)
 
-  const [currentMemorandumData, setCurrentMemorandumData] = useState(mockCurrentMemoRandumData);
+  const [currentMemorandumData, setCurrentMemorandumData] = useState([]);
   const [historyMemorandumData, setHistoryMemorandumData] = useState(mockHistoryMemoRandumData);
   const [inspirationData, setInspirationData] = useState(mockInspirationData);
 
   const [showMemorandumModal, setShowMemorandumModal] = useState(false);
-  const [type, setType] = useState(MemorandumTabType.current);
+  const [type, setType] = useState<MemorandumTabType.current | MemorandumTabType.history>(MemorandumTabType.current);
   const [task, setTask] = useState('');
-  const [timeType, setTimeType] = useState('everyDay');
-  const [everyDayremainTime, setEveryDayRemainTime] = useState<number>();
+  const [timeType, setTimeType] = useState<'everyDay' | 'timing'>('everyDay');
+  const [everyDayremainTime, setEveryDayRemainTime] = useState<number>(now);
   const [timingremainTime, setTimingRemainTime] = useState<number>(6);
   const [addPriority, setAddPriority] = useState<PriorityLevel>(PriorityLevel.middle);
 
   useEffect(() => {
-    // getMemorandumList({
-    //   tab: tabKey,
-    //   search,
-    //   date,
-    //   page,
-    //   priority
-    // }).then(res => {
-    //   console.log(res);
-    //   // setCurrentMemorandumData(res?.data || []);
-    // });
-
-  }, [search, date, priority]);
+    fetchMemorandumList();
+  }, [page, search, date, priority]);
 
   const currentColumns = [
     {
@@ -107,12 +99,12 @@ export default function Memorandum() {
       title: '操作',
       dataIndex: 'operate',
       key: 'operate',
-      render() {
+      render(value: undefined, row: any) {
         return (
           <Flex gap="0 12px">
-            <Button type="primary">完成</Button>
+            <Button type="primary" onClick={() => finishTask(row.id)}>完成</Button>
             <Button>延后</Button>
-            <Button type="primary" danger>删除</Button>
+            <Button type="primary" danger onClick={() => deleteTask(row.id)}>删除</Button>
           </Flex>
         );
       }
@@ -172,8 +164,77 @@ export default function Memorandum() {
 
   };
 
-  const addMemorandum = () => {
-    // api...
+  const changeTab = (key: string) => {
+    setTabKey(key as MemorandumTabType);
+    setPage(1);
+  }
+
+  const fetchMemorandumList = () => {
+    getMemorandumList({
+      tab: tabKey,
+      search,
+      date,
+      page,
+      priority
+    }).then(res => {
+      if (tabKey === MemorandumTabType.current) {
+        setCurrentMemorandumData(res?.data?.list || []);
+        setTotalCount(res?.data?.totalCount || 0);
+      }
+      if (tabKey === MemorandumTabType.history) {
+        setHistoryMemorandumData(res?.data?.list || []);
+        setTotalCount(res?.data?.totalCount || 0);
+      }
+      if (tabKey === MemorandumTabType.inspiration) {
+        setInspirationData(res?.data?.list || []);
+        setTotalCount(res?.data?.totalCount || 0);
+      }
+    });
+  };
+
+  const finishTask = (id: number) => {
+    fetchFinishTask({
+      id
+    }).then(res => {
+      if (res?.data?.success) {
+        message.success('操作成功!');
+        fetchMemorandumList();
+      }
+    });
+  };
+
+  const deleteTask = (id: number) => {
+    fetchDeleteTask({
+      id
+    }).then(res => {
+      if (res?.data?.success) {
+        message.success('操作成功!');
+        fetchMemorandumList();
+      }
+    });
+  }
+
+  const addMemorandumClick = () => {
+    if (!task) {
+      message.warning('未输入 task!');
+      return;
+    }
+
+    addMemorandum({
+      type,
+      task,
+      timeType,
+      remainTime: timeType === 'everyDay' ? everyDayremainTime : timingremainTime,
+      priority: addPriority
+    }).then(res => {
+      if (res?.data?.success) {
+        message.success('添加成功!');
+        setShowMemorandumModal(false);
+      }
+    }).catch(err => {
+      console.log(err);
+      setShowMemorandumModal(false);
+    });
   };
 
   return (
@@ -194,18 +255,51 @@ export default function Memorandum() {
       <div className="container">
         <Tabs
           defaultActiveKey={MemorandumTabType.current}
-          onChange={(key: string) => setTabKey(key as MemorandumTabType)}
+          onChange={changeTab}
           items={tabList}
         />
         <div>
           {tabKey === MemorandumTabType.current && (
-            <Table columns={currentColumns} dataSource={currentMemorandumData} />
+            <Table
+              columns={currentColumns}
+              dataSource={currentMemorandumData}
+              pagination={{
+                current: page,
+                defaultPageSize: 10,
+                total: totalCount,
+                onChange(page) {
+                  setPage(page);
+                },
+              }}
+            />
           )}
           {tabKey === MemorandumTabType.history && (
-            <Table columns={histroyColumns} dataSource={historyMemorandumData} />
+            <Table
+              columns={histroyColumns}
+              dataSource={historyMemorandumData}
+              pagination={{
+                current: page,
+                defaultPageSize: 10,
+                total: totalCount,
+                onChange(page) {
+                  setPage(page);
+                },
+              }}
+            />
           )}
           {tabKey === MemorandumTabType.inspiration && (
-            <Table columns={inspirationColumns} dataSource={inspirationData} />
+            <Table
+              columns={inspirationColumns}
+              dataSource={inspirationData}
+              pagination={{
+                current: page,
+                defaultPageSize: 10,
+                total: totalCount,
+                onChange(page) {
+                  setPage(page);
+                },
+              }}
+            />
           )}
         </div>
       </div>
@@ -216,7 +310,7 @@ export default function Memorandum() {
 
       <Modal
         open={showMemorandumModal}
-        onOk={addMemorandum}
+        onOk={addMemorandumClick}
         onCancel={() => setShowMemorandumModal(false)}
         title="添加备忘录"
       >

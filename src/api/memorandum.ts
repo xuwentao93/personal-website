@@ -16,8 +16,16 @@ export const getMemorandumList = (params: GetMemorandumListType) => request.get(
 export interface AddMemorandumType {
   type: MemorandumTabType.current | MemorandumTabType.history,
   task: string,
-  // remainTime: 
-  priority?: PriorityLevel
+  priority?: PriorityLevel,
+  timeType: 'everyDay' | 'timing'
+  remainTime: number
 }
 
+// 添加备忘录
 export const addMemorandum = (data: AddMemorandumType) => request.post('/memorandum/add', data);
+
+// 完成某个task
+export const fetchFinishTask = (data: { id: number }) => request.post('/memorandum/finish', data);
+
+// 删除某个 task
+export const fetchDeleteTask = (data: { id: number }) => request.post('/memorandum/delete', data);
