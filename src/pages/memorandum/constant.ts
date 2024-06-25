@@ -67,6 +67,13 @@ export enum AddTimeType {
   timing = 'timing'
 }
 
+export enum OperateType {
+  finish = 'finish',
+  delete = 'delete',
+  delay = 'delay',
+  hidden = 'hidden'
+}
+
 export const timeList: number[] = [];
 
 for (let i = 1; i <= 24; i++) {

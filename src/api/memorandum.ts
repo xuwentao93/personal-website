@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 import { MemorandumTabType } from '@/pages/memorandum/constant';
-import { PriorityLevel } from '@/pages/memorandum/constant';
+import { PriorityLevel, OperateType } from '@/pages/memorandum/constant';
 
 export interface GetMemorandumListType {
   // 备忘录, 历史备忘录, 灵感 tab 选项
@@ -24,8 +24,12 @@ export interface AddMemorandumType {
 // 添加备忘录
 export const addMemorandum = (data: AddMemorandumType) => request.post('/memorandum/add', data);
 
-// 完成某个task
-export const fetchFinishTask = (data: { id: number }) => request.post('/memorandum/finish', data);
+export interface fetchTaskType {
+  id: number,
+  taskType: MemorandumTabType.current | MemorandumTabType.inspiration,
+  operateType: OperateType
+}
 
-// 删除某个 task
-export const fetchDeleteTask = (data: { id: number }) => request.post('/memorandum/delete', data);
+// 操作 task
+export const fetchOperateTask = (data: fetchTaskType) => request.post('/memorandum/operate', data);
+

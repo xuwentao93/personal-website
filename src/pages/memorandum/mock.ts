@@ -29,121 +29,37 @@ export const mockHistoryMemoRandumData = [
     task: '容易忘记的事情',
     finishTime: '2024.07.20 8:00',
     priority: PriorityLevel.middle,
-    key: '1'
+    key: '5'
   },
   {
     task: '容易忘记的事情',
     finishTime: '2024.07.20 8:00',
     priority: PriorityLevel.low,
-    key: '2'
+    key: '6'
   },
   {
     task: '容易忘记的事情',
     finishTime: '2024.07.20 8:00',
     priority: PriorityLevel.heighest,
-    key: '3'
+    key: '7'
   },
   {
     task: '容易忘记的事情',
     finishTime: '2024.07.20 8:00',
     priority: PriorityLevel.high,
-    key: '4'
+    key: '8'
   },
   {
     task: '容易忘记的事情',
     finishTime: '2024.07.20 8:00',
     priority: PriorityLevel.middle,
-    key: '1'
+    key: '9'
   },
   {
     task: '容易忘记的事情',
     finishTime: '2024.07.20 8:00',
     priority: PriorityLevel.low,
-    key: '2'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.heighest,
-    key: '3'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.high,
-    key: '4'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.middle,
-    key: '1'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.low,
-    key: '2'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.heighest,
-    key: '3'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.high,
-    key: '4'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.middle,
-    key: '1'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.low,
-    key: '2'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.heighest,
-    key: '3'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.high,
-    key: '4'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.middle,
-    key: '1'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.low,
-    key: '2'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.heighest,
-    key: '3'
-  },
-  {
-    task: '容易忘记的事情',
-    finishTime: '2024.07.20 8:00',
-    priority: PriorityLevel.high,
-    key: '4'
+    key: '10'
   }
 ];
 

@@ -13,7 +13,7 @@ import {
   TimePicker,
   message
 } from 'antd';
-import { getMemorandumList, addMemorandum, fetchFinishTask, fetchDeleteTask } from '@/api/memorandum';
+import { getMemorandumList, addMemorandum, fetchOperateTask } from '@/api/memorandum';
 import {
   tabList,
   MemorandumTabType,
@@ -21,12 +21,9 @@ import {
   priorityList,
   typeList,
   AddTimeType,
-  timeList
+  timeList,
+  OperateType
 } from './constant';
-import {
-  mockHistoryMemoRandumData,
-  mockInspirationData
-} from './mock';
 import './index.less';
 import dayjs from 'dayjs';
 
@@ -44,8 +41,8 @@ export default function Memorandum() {
   const [totalCount, setTotalCount] = useState(0)
 
   const [currentMemorandumData, setCurrentMemorandumData] = useState([]);
-  const [historyMemorandumData, setHistoryMemorandumData] = useState(mockHistoryMemoRandumData);
-  const [inspirationData, setInspirationData] = useState(mockInspirationData);
+  const [historyMemorandumData, setHistoryMemorandumData] = useState([]);
+  const [inspirationData, setInspirationData] = useState([]);
 
   const [showMemorandumModal, setShowMemorandumModal] = useState(false);
   const [type, setType] = useState<MemorandumTabType.current | MemorandumTabType.history>(MemorandumTabType.current);
@@ -81,13 +78,13 @@ export default function Memorandum() {
       key: 'nextRemainTime'
     },
     {
-      title: '时间优先级',
+      title: '优先级',
       dataIndex: 'priority',
       key: 'priority',
       render(value: number) {
         const renderByPriority: { [key: string]: JSX.Element } = {
-          [PriorityLevel.heighest]: <Tag color="#f50" className="bigger">最高</Tag>,
-          [PriorityLevel.high]:  <Tag color="#2db7f5">高</Tag>,
+          [PriorityLevel.heighest]: <Tag color="#f00" className="bigger">最高</Tag>,
+          [PriorityLevel.high]:  <Tag color="#f60">高</Tag>,
           [PriorityLevel.middle]: <Tag color="#108ee9">中</Tag>,
           [PriorityLevel.low]: <Tag color="#87d068">低</Tag>
         };
@@ -102,9 +99,15 @@ export default function Memorandum() {
       render(value: undefined, row: any) {
         return (
           <Flex gap="0 12px">
-            <Button type="primary" onClick={() => finishTask(row.id)}>完成</Button>
-            <Button>延后</Button>
-            <Button type="primary" danger onClick={() => deleteTask(row.id)}>删除</Button>
+            <Button type="primary" onClick={() => operateTask(row.id, MemorandumTabType.current, OperateType.finish)}>
+              完成
+            </Button>
+            <Button onClick={() => operateTask(row.id, MemorandumTabType.current, OperateType.delay)}>
+              延后
+            </Button>
+            <Button type="primary" danger onClick={() => operateTask(row.id, MemorandumTabType.current, OperateType.delete)}>
+              删除
+            </Button>
           </Flex>
         );
       }
@@ -123,10 +126,20 @@ export default function Memorandum() {
       key: 'finishTime'
     },
     {
-      title: '事件优先级',
+      title: '优先级',
       dataIndex: 'priority',
-      key: 'priority'
-    }
+      key: 'priority',
+      render(value: number) {
+        const renderByPriority: { [key: string]: JSX.Element } = {
+          [PriorityLevel.heighest]: <Tag color="#f00" className="bigger">最高</Tag>,
+          [PriorityLevel.high]:  <Tag color="#f66">高</Tag>,
+          [PriorityLevel.middle]: <Tag color="#108ee9">中</Tag>,
+          [PriorityLevel.low]: <Tag color="#87d068">低</Tag>
+        };
+
+        return renderByPriority[`${value}`];
+      }
+    },
   ];
 
   const inspirationColumns = [
@@ -154,47 +167,67 @@ export default function Memorandum() {
       title: '操作',
       dataIndex: 'operate',
       key: 'operate',
-      render() {
-        return <div>1</div>;
+      render(value: undefined, row: any) {
+        return (
+          <Flex gap="0 12px">
+            <Button type="primary" onClick={() => operateTask(row.id, MemorandumTabType.current, OperateType.finish)}>
+              完成
+            </Button>
+            <Button onClick={() => operateTask(row.id, MemorandumTabType.current, OperateType.hidden)}>
+              隐藏
+            </Button>
+            <Button type="primary" danger onClick={() => operateTask(row.id, MemorandumTabType.current, OperateType.delete)}>
+              删除
+            </Button>
+          </Flex>
+        );
       }
     }
   ];
 
   const clear = () => {
-
+    setSearch('');
+    setPriority(undefined);
+    setDate(['', '']);
   };
 
   const changeTab = (key: string) => {
     setTabKey(key as MemorandumTabType);
     setPage(1);
+    setTimeout(() => {
+      fetchMemorandumList(key as MemorandumTabType);
+    }, 0);
   }
 
-  const fetchMemorandumList = () => {
+  const fetchMemorandumList = (key?: MemorandumTabType) => {
+    const curKey = key || tabKey;
     getMemorandumList({
-      tab: tabKey,
+      tab: curKey,
       search,
       date,
       page,
       priority
     }).then(res => {
-      if (tabKey === MemorandumTabType.current) {
+      if (curKey === MemorandumTabType.current) {
         setCurrentMemorandumData(res?.data?.list || []);
         setTotalCount(res?.data?.totalCount || 0);
       }
-      if (tabKey === MemorandumTabType.history) {
+      if (curKey === MemorandumTabType.history) {
         setHistoryMemorandumData(res?.data?.list || []);
         setTotalCount(res?.data?.totalCount || 0);
       }
-      if (tabKey === MemorandumTabType.inspiration) {
+      if (curKey === MemorandumTabType.inspiration) {
         setInspirationData(res?.data?.list || []);
         setTotalCount(res?.data?.totalCount || 0);
       }
     });
   };
 
-  const finishTask = (id: number) => {
-    fetchFinishTask({
-      id
+  const operateTask = (id: number, taskType: MemorandumTabType.current | MemorandumTabType.inspiration, operateType: OperateType) => {
+    fetchOperateTask({
+      id,
+      taskType,
+      operateType
     }).then(res => {
       if (res?.data?.success) {
         message.success('操作成功!');
@@ -203,16 +236,6 @@ export default function Memorandum() {
     });
   };
 
-  const deleteTask = (id: number) => {
-    fetchDeleteTask({
-      id
-    }).then(res => {
-      if (res?.data?.success) {
-        message.success('操作成功!');
-        fetchMemorandumList();
-      }
-    });
-  }
 
   const addMemorandumClick = () => {
     if (!task) {
@@ -244,7 +267,7 @@ export default function Memorandum() {
         <div className="width-300">
           <Input value={search} placeholder="请输入你想要搜索的内容" onChange={e => setSearch(e.target.value)} />
         </div>
-        <Select placeholder="优先级" className="width-100" onChange={value => setPriority(value)}>
+        <Select placeholder="优先级" className="width-100" value={priority} onChange={value => setPriority(value)}>
           {priorityList.map(item => (
             <Option key={item.value} value={item.value}>{item.label}</Option>
           ))}
