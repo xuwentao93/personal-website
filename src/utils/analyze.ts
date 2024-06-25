@@ -40,14 +40,11 @@ function calFinalScore() {
 
   if (isCheckFMP) {
     stop = true;
-    // 取 FMP 时间，默认是 30001 大于 30s 会自动被过滤
     var imgElements = document.querySelectorAll('img');
 
     // 遍历所有的 img 标签元素
     imgElements.forEach(function(imgElement) {
-      // 获取图片的 URL
       var imgUrl = imgElement.src;
-      // 创建一个 Image 对象
       var img = new Image();
 
       // 记录请求开始时间
@@ -55,25 +52,9 @@ function calFinalScore() {
 
       // 设置图片加载完成的事件处理程序
       img.onload = function() {
-        // 记录请求结束时间
         var endTime = performance.now();
-
-        // 计算请求持续时间
-        var duration = endTime - startTime;
-
-        // 输出图片请求信息
-        console.log('图片 URL：', imgUrl);
-        console.log('请求开始时间：', startTime);
-        console.log('请求结束时间：', endTime);
-        console.log('持续时间：', duration + ' 毫秒');
+        console.log(startTime, endTime);
       };
-
-      // 设置图片加载失败的事件处理程序
-      img.onerror = function() {
-        // 输出加载失败信息
-        console.log('图片加载失败：', imgUrl);
-      };
-
       // 设置图片的 URL
       img.src = imgUrl;
     });
