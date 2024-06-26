@@ -5,6 +5,7 @@ import { testApi } from './api';
 import { analyzeDOM } from '@/utils/analyze';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './global/index.css';
+import './mock';
 
 // 加入 React 18 的 concurrent 模式, 使用新的 hook 和并发模式.
 const root = createRoot(document.getElementById('root') as HTMLElement);

@@ -3,10 +3,10 @@ import axios, { AxiosInstance } from 'axios';
 const request = axios.create({
   timeout: 5000,
   // 这块不要用域名, 遇到了域名过期导致代码失效的问题.
-  baseURL: 'https://www.wentaowulue.com:8080',
+  baseURL: 'http://www.wentaowulue.com:8080',
   // baseURL: 'https://1.12.37.251:8080',
   headers: {
-    'Content-type': 'application/json',
+    'Content-type': 'application/json'
   }
 });
 

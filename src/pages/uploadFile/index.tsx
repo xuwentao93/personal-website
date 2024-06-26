@@ -1,6 +1,10 @@
 import * as React from 'react';
-import { useState, useEffect, useRef, useTransition } from 'react';
-import { Button, Progress, Table, message } from 'antd';
+import {
+  useState, useEffect, useRef, useTransition
+} from 'react';
+import {
+  Button, Progress, Table, message
+} from 'antd';
 import Scheduler from '@/utils/schedule';
 import SparkMD5 from 'spark-md5';
 import './index.less';
@@ -42,26 +46,29 @@ export default function UploadFile() {
       title: '进度',
       dataIndex: 'progress',
       render(value: number) {
-        return <Progress percent={value} />
-      }  
+        return <Progress percent={value} />;
+      }
     },
     {
       title: '状态',
       dataIndex: 'status',
       render(value: string) {
         if (value === 'success') {
-          return <div>成功</div>
-        } else if (value === 'pending') {
-          return <div>上传中...</div>
+          return <div>成功</div>;
         }
-        return <div>重传</div>
+        if (value === 'pending') {
+          return <div>上传中...</div>;
+        }
+        return <div>重传</div>;
       }
     }
   ];
 
   // 自定义 ajax 请求.
   const request = (params: RequestParams) => {
-    const { url, method, data, headers, onprogress } = params;
+    const {
+      url, method, data, headers, onprogress
+    } = params;
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       if (onprogress) {
@@ -117,6 +124,7 @@ export default function UploadFile() {
 
       const workLoop = async () => {
         while (count < prevFileChunkList.length) {
+          // eslint-disable-next-line no-await-in-loop
           await appendToSpark(prevFileChunkList[count++].chunk);
           if (count < prevFileChunkList.length) {
             startTransition(() => {
@@ -174,7 +182,7 @@ export default function UploadFile() {
     if (fileChunkList.length === 0 || !file) {
       return;
     }
-      
+
     const requestList = fileChunkList.map(({ chunk, hash }) => {
       const formData = new FormData();
       formData.append('chunk', chunk);
@@ -182,7 +190,7 @@ export default function UploadFile() {
       formData.append('name', file.name);
       return formData;
     }).map((formData, index) => () => request({
-      url: 'http://www.wentaowulue.com:3456/file/upload', 
+      url: 'http://www.wentaowulue.com:3456/file/upload',
       method: 'post',
       data: formData,
       onprogress: getChunkProgress(index)

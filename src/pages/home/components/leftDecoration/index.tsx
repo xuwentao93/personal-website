@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import mahjong from '@/assets/mahjong.jpg';
 import plan from '@/assets/timebg.jpg';
 import boardgame from '@/assets/boardgamebg.jpg';
 import './index.less';
@@ -12,10 +11,6 @@ interface RenderToolListType {
 
 // 工具列表.
 const renderToolList: RenderToolListType[] = [
-  {
-    img: mahjong,
-    url: 'mahjong'
-  },
   {
     img: plan,
     url: 'plan'
