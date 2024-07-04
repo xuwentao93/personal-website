@@ -2,6 +2,7 @@
 import { PriorityLevel } from '@/pages/memorandum/constant';
 import Mock from 'mockjs';
 
+// memoRandum
 Mock.mock('http://www.wentaowulue.com:8080/memorandum/list?tab=current&search=&date[]=&date[]=&page=1', 'get', {
   status: 200,
   message: 'success',
@@ -442,6 +443,55 @@ Mock.mock('http://www.wentaowulue.com:8080/memorandum/list?tab=inspiration&searc
         nextRemainTime: '06.21 8:00',
         key: '4'
       }
+    ]
+  }
+});
+
+// plan/regular
+Mock.mock('http://www.wentaowulue.com:8080/plan/regular-list?page=1&tab=day', 'get', {
+  status: 200,
+  success: true,
+  data: {
+    success: true,
+    page: 1,
+    totalCount: 4,
+    data: [
+      {
+        date: 1720106081933,
+        list: [
+          {
+            plan: '看完结构思考力'
+          },
+          {
+            plan: '学习 5 小时'
+          }
+      ]
+      },
+      {
+        date: 1720019681934,
+        list: [
+          {
+            plan: '唱歌'
+          },
+          {
+            plan: '跳舞'
+          }
+        ]
+      },
+      {
+        date: 1719933300406,
+        list: [
+          {
+            plan: '这是一个很长的计划: 4.要不要冥想？如何冥想？每天什么时候冥想？（要冥想，静坐就行，从 5 min 持续增加到 20min，最好一天一次，在白天刚起来的时候最好）'
+          },
+          {
+            plan: '17.减肥营养计划，基础代谢的回复，饮食的平衡（碳水，蛋白质，脂肪），运动的量'
+          },
+          {
+            plan: '16.全面了解公积金，杭州公积金'
+          }
+        ]
+      },
     ]
   }
 });

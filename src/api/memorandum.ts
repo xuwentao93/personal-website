@@ -1,7 +1,5 @@
 import request from '@/utils/request';
-import { MemorandumTabType } from '@/pages/memorandum/constant';
-import { PriorityLevel, OperateType } from '@/pages/memorandum/constant';
-
+import { MemorandumTabType, PriorityLevel, OperateType } from '@/pages/memorandum/constant';
 export interface GetMemorandumListType {
   // 备忘录, 历史备忘录, 灵感 tab 选项
   tab: MemorandumTabType,

@@ -1,8 +1,21 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { TITLE_LIST, PlanType } from './constant';
-// import { tab } from 'antd';
+import Progress from './components/progress';
+import Daily from './components/daily';
+import List from './components/list';
+import Record from './components/record';
+import Regular from './components/regular';
+
 import './index.less';
+
+const listComponent = {
+  [PlanType.regular]: <Regular />,
+  [PlanType.list]: <List />,
+  [PlanType.daily]: <Daily />,
+  [PlanType.progress]: <Progress />,
+  [PlanType.record]: <Record />
+}
 
 export default function Plan() {
   const [titleSelected, setTitleSelected] = useState(PlanType.regular);
@@ -26,6 +39,9 @@ export default function Plan() {
             </div>
           ))}
         </div>
+      </div>
+      <div className="content-container">
+        {listComponent[PlanType.regular]}
       </div>
     </div>
   );
