@@ -17,7 +17,8 @@ export interface AddMemorandumType {
   type: MemorandumTabType.current | MemorandumTabType.history,
   task: string,
   priority?: PriorityLevel,
-  timeType: 'everyDay' | 'timing'
+  timeType: 'everyDay' | 'timing',
+  ifRemain: Boolean,
   remainTime: number
 }
 

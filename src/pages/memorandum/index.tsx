@@ -47,6 +47,7 @@ export default function Memorandum() {
   const [showMemorandumModal, setShowMemorandumModal] = useState(false);
   const [type, setType] = useState<MemorandumTabType.current | MemorandumTabType.history>(MemorandumTabType.current);
   const [task, setTask] = useState('');
+  const [ifRemain, setIfRemain] = useState(true)
   const [timeType, setTimeType] = useState<'everyDay' | 'timing'>('everyDay');
   const [everyDayremainTime, setEveryDayRemainTime] = useState<number>(now);
   const [timingremainTime, setTimingRemainTime] = useState<number>(6);
@@ -247,6 +248,7 @@ export default function Memorandum() {
       type,
       task,
       timeType,
+      ifRemain,
       remainTime: timeType === 'everyDay' ? everyDayremainTime : timingremainTime,
       priority: addPriority
     }).then(res => {
@@ -359,38 +361,56 @@ export default function Memorandum() {
         </div>
 
         <div className="personal-memorandum-modal-flex-page">
-          <div className="title">提醒时间</div>
+          <div className="title">是否提醒</div>
           <div className="value">
             <Select
-              placeholder="请选择类型"
               className="width-100"
-              onChange={value => setTimeType(value)}
-              value={timeType}
+              onChange={value => setIfRemain(value)}
+              value={ifRemain}
             >
-              <Option value={AddTimeType.everyDay}>每天</Option>
-              <Option value={AddTimeType.timing}>定时</Option>
+              <Option value>是</Option>
+              <Option value={false}>否</Option>
             </Select>
           </div>
         </div>
-        <div className="personal-memorandum-modal-flex-page">
-          <div className="title">时间</div>
-          <div className="value">
-            {timeType === AddTimeType.everyDay && (
-              <TimePicker
-                value={dayjs(everyDayremainTime)}
-                onChange={e => setEveryDayRemainTime(e.valueOf())}
-                format="HH:mm"
-              />
-            )}
-            {timeType === AddTimeType.timing && (
-              <Select value={timingremainTime} onChange={value => setTimingRemainTime(value)}>
-                {timeList.map(item => (
-                  <Option key={item} value={item}>{item}</Option>
-                ))}
-              </Select>
-            )}
-          </div>
-        </div>
+
+        {ifRemain && (
+          <>
+            <div className="personal-memorandum-modal-flex-page">
+              <div className="title">提醒时间</div>
+              <div className="value">
+                <Select
+                  placeholder="请选择类型"
+                  className="width-100"
+                  onChange={value => setTimeType(value)}
+                  value={timeType}
+                >
+                  <Option value={AddTimeType.everyDay}>每天</Option>
+                  <Option value={AddTimeType.timing}>定时</Option>
+                </Select>
+              </div>
+            </div>
+            <div className="personal-memorandum-modal-flex-page">
+              <div className="title">时间</div>
+              <div className="value">
+                {timeType === AddTimeType.everyDay && (
+                  <TimePicker
+                    value={dayjs(everyDayremainTime)}
+                    onChange={e => setEveryDayRemainTime(e.valueOf())}
+                    format="HH:mm"
+                  />
+                )}
+                {timeType === AddTimeType.timing && (
+                  <Select value={timingremainTime} onChange={value => setTimingRemainTime(value)}>
+                    {timeList.map(item => (
+                      <Option key={item} value={item}>{item}</Option>
+                    ))}
+                  </Select>
+                )}
+              </div>
+            </div>
+          </>
+        )}
         <div className="personal-memorandum-modal-flex-page">
           <div className="title">优先级</div>
           <Select
