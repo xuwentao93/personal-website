@@ -1,4 +1,4 @@
-enum PlanType {
+export enum PlanType {
   regular = '定期计划',
   progress = '计划进度',
   record = '记录',

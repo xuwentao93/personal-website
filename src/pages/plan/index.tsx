@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { TITLE_LIST } from './constant';
+import { TITLE_LIST, PlanType } from './constant';
 // import { tab } from 'antd';
 import './index.less';
 
 export default function Plan() {
-  const [titleSelected, setTitleSelected] = useState(TITLE_LIST[0]);
+  const [titleSelected, setTitleSelected] = useState(PlanType.regular);
 
   useEffect(() => {
 
